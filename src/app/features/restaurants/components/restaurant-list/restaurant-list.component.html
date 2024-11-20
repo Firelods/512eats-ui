@@ -1,1 +1,21 @@
-<p>restaurant-list works!</p>
+<div class="restaurant-list">
+    @for (restaurant of restaurants$ | async; track restaurant) {
+    <div class="restaurant-card">
+        <div class="restaurant-header">
+            <h2>{{ restaurant.name }}</h2>
+            <p>{{ restaurant.averagePrice }} • {{ restaurant.foodTypeList }}</p>
+        </div>
+        <div class="restaurant-images">
+            <img
+                [src]="restaurant.dishPictureURLListSample"
+                alt="{{ restaurant.name }} main image"
+            />
+            <div class="secondary-images">
+                @for (image of restaurant.dishPictureURLListSample.shift(); track image) {
+                <img [src]="image" alt="Secondary image" />
+                }
+            </div>
+        </div>
+    </div>
+    }
+</div>

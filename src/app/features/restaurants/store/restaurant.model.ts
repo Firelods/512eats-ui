@@ -1,3 +1,10 @@
 export interface Restaurant {
-  id: string;
+    id: number;
+    name: string;
+    openTime: string;
+    closeTime: string;
+    foodTypeList: string[];
+    averagePrice: number;
+    description: string;
+    dishPictureURLListSample: string[];
 }
