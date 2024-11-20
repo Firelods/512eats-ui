@@ -30,18 +30,25 @@
         <input type="text" placeholder="Search for restaurants " />
         <button class="search-btn"><img src="search.svg" alt="search"></button>
     </div>
-
-    <label class="toggle">
-        <input type="checkbox"  [(ngModel)]="isToggled"/>
-        <span class="slider"></span>
+    <div class="toggle-container">
+        <div class="toggle">
+            <input type="checkbox" class="checkbox" id="checkbox" [(ngModel)]="isToggled">
+            <label class="switch" for="checkbox">
+                <span class="slider"></span>
+            </label>
+        </div>
         <span class="toggle-text">Open now</span>
-    </label>
+    </div>
+
+
 
     <div class="filters">
         <div class="categories">
             @for(category of categories; track $index){
-            <button class="category" [class.active]="selectedCategory === category" (click)="selectCategory(category)">
-                {{ category }}
+            <button class="category" [class.active]="selectedCategory === category.name"
+                (click)="selectCategory(category.name)">
+                <!--<img src="{{category.icon}}" [alt]="category.name + ' icon'" class="category-icon">-->
+                <span>{{ category.name }}</span>
             </button>
             }
         </div>

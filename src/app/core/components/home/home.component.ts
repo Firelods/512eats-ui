@@ -8,7 +8,12 @@ import { Component } from '@angular/core';
 export class HomeComponent {
     searchQuery: string = '';
     isOpenNow: boolean = true;
-    categories: string[] = ['Burgers', 'Pizza', 'Sushi', 'Salads'];
+    categories: { name: string; icon: string }[] = [
+        { name: 'Burgers', icon: 'burger-icon.svg' },
+        { name: 'Pizza', icon: 'pizza-icon.svg' },
+        { name: 'Sushi', icon: 'sushi-icon.svg' },
+        { name: 'Salads', icon: 'salad-icon.svg' },
+    ];
     selectedCategory: string = 'Burgers';
     isToggled: boolean = false;
 
