@@ -1,2 +1,49 @@
-<h1>HOME</h1>
-<app-restaurant-list></app-restaurant-list>
+<div class="container">
+    <header class="header">
+        <h3>512 Eats</h3>
+        <div class="basket">
+            <img src="basket.svg" alt="basket" />
+        </div>
+    </header>
+
+    <div class="delivery-info">
+        <img class="pin" src="pin.svg" alt="pin">
+        <div class="deliver-text">
+            <p>Deliver to</p>
+            <p class="location">2 passage Marie Antoinette, Antibes</p>
+        </div>
+        <img class="arrow-down" src="arrow_down.svg" alt="arrow">
+
+
+    </div>
+
+    <div class="group-order">
+        <div class="group-order-input">
+            <img src="group.svg" alt="group">
+            <input type="text" placeholder="#010203" class="group-code" />
+        </div>
+
+        <button class="join-btn">Join group order</button>
+    </div>
+
+    <div class="search-bar">
+        <input type="text" placeholder="Search for restaurants " />
+        <button class="search-btn"><img src="search.svg" alt="search"></button>
+    </div>
+
+    <label class="toggle">
+        <input type="checkbox"  [(ngModel)]="isToggled"/>
+        <span class="slider"></span>
+        <span class="toggle-text">Open now</span>
+    </label>
+
+    <div class="filters">
+        <div class="categories">
+            @for(category of categories; track $index){
+            <button class="category" [class.active]="selectedCategory === category" (click)="selectCategory(category)">
+                {{ category }}
+            </button>
+            }
+        </div>
+    </div>
+</div>
