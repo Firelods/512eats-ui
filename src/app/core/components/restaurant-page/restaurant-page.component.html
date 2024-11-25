@@ -1,0 +1,25 @@
+<div class="restaurant-page">
+    <!-- Restaurant Header -->
+    <div class="restaurant-info">
+        <p class="price-category">@for (item of [].constructor(restaurant.averagePrice); track $index) {$} ·
+            {{restaurant.foodTypeList}}</p>
+        <h1 class="name">{{restaurant.name}}</h1>
+        <p class="opening-hours">Opening time: Mon-Fri, {{restaurant.openTime}} - {{restaurant.closeTime}}</p>
+        <p class="description">{{restaurant.description}}</p>
+    </div>
+
+
+    <div class="menu">
+        <h2>Menu</h2>
+        @for(dish of dishes; track $index){
+        <div class="menu-item">
+            <div class="menu-info">
+                <h3 class="dish-name">{{ dish.name }}</h3>
+                <p class="dish-description">{{ dish.description }}</p>
+                <p class="dish-price">{{ dish.price }} · {{ dish.time }}</p>
+            </div>
+            <img src={{dish.image}} [alt]="dish.name" class="dish-image" />
+        </div>
+        }
+    </div>
+</div>
