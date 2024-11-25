@@ -1,5 +1,4 @@
 .restaurant-page {
-    font-family: "Outfit", sans-serif;
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
@@ -10,41 +9,47 @@
 
 .restaurant-info {
     margin-top: 10%;
-}
 
-.restaurant-info .price-category {
-    margin-bottom: 2%;
-    font-size: 0.9em;
-    color: #796864;
-}
+    .price-category,
+    .name,
+    .opening-hours {
+        margin-bottom: 2%;
+    }
 
-.restaurant-info .name {
-    margin-bottom: 2%;
-    font-size: 1.5em;
-    font-weight: bold;
-    margin: 5px 0;
-}
+    .name,
+    .opening-hours {
+        font-weight: bold;
+    }
 
-.restaurant-info .opening-hours {
-    margin-bottom: 2%;
-    font-size: 0.9em;
-    color: #796864;
-    font-weight: bold;
-}
+    .price-category {
+        font-size: 0.9em;
+        color: #796864;
+    }
 
-.restaurant-info .description {
-    margin-bottom: 5%;
-    margin-top: 5px;
-    font-size: 0.95em;
+    .name {
+        font-size: 1.5em;
+        margin: 5px 0;
+    }
+
+    .opening-hours {
+        font-size: 0.9em;
+        color: #796864;
+    }
+
+    .description {
+        margin-bottom: 5%;
+        margin-top: 5px;
+        font-size: 0.95em;
+    }
 }
 
 .menu {
     margin-top: 20px;
-}
 
-.menu h2 {
-    font-size: 1.2em;
-    margin-bottom: 10px;
+    h2 {
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
 }
 
 .menu-item {
@@ -53,31 +58,31 @@
     align-items: flex-start;
     padding: 20px 0;
     border-bottom: 1px solid #f3e9e7;
-}
 
-.menu-item:last-child {
-    border-bottom: none;
+    &:last-child {
+        border-bottom: none;
+    }
 }
 
 .menu-info {
     flex: 1;
     margin-right: 10px;
-}
 
-.menu-info .dish-name {
-    font-size: 1em;
-    font-weight: bold;
-}
+    .dish-name {
+        font-size: 1em;
+        font-weight: bold;
+    }
 
-.menu-info .dish-description {
-    font-size: 0.9em;
-    color: #796864;
-}
+    .dish-description {
+        font-size: 0.9em;
+        color: #796864;
+    }
 
-.menu-info .dish-price {
-    font-size: 0.9em;
-    font-weight: bold;
-    margin-top: 5px;
+    .dish-price {
+        font-size: 0.9em;
+        font-weight: bold;
+        margin-top: 5px;
+    }
 }
 
 .dish-image {
