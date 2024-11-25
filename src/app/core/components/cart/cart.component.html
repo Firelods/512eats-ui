@@ -1,0 +1,29 @@
+<div class="header">
+    <div class="back-button">
+        <img src="arrow_left.svg" alt="Back" class="back-icon" (click)="goToRestaurants()" />
+    </div>
+    <h2 class=title> My cart</h2>
+
+</div>
+
+<div class="cart-container">
+    <div class="cart-item" *ngFor="let item of cartItems">
+        <img [src]="item.image" alt="{{ item.name }}" class="item-image" />
+        <div class="item-details">
+            <h3 class="item-name">{{ item.name }}</h3>
+            <div class="item-actions">
+                <button class="remove-btn" *ngIf="item.quantity === 1" (click)="removeItem(item)">🗑️</button>
+                <button class="quantity-btn" *ngIf="item.quantity > 1" (click)="decreaseQuantity(item)">-</button>
+                <span class="quantity">{{ item.quantity }}</span>
+                <button class="quantity-btn" (click)="increaseQuantity(item)">+</button>
+            </div>
+        </div>
+        <p class="item-price">${{ item.price }}</p>
+    </div>
+
+    <div class="cart-summary">
+        <p>Estimated Total</p>
+        <h2>${{ calculateTotal() }}</h2>
+        <button class="pay-btn" (click)="payOrder()">Pay Order</button>
+    </div>
+</div>
