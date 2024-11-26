@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { Restaurant } from '../../../features/restaurants/store/restaurant.model';
 
@@ -34,4 +35,16 @@ export class RestaurantPageComponent {
         },
         // Ajouter plus de plats ici
     ];
+
+    constructor(private router:Router) {}
+
+    goToHomePage(){
+        this.router.navigate(['/']);
+    }
+
+    goToCartPage(){
+        this.router.navigate(['/cart']);
+    }
 }
+
+
