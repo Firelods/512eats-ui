@@ -1,0 +1,35 @@
+<div class="header">
+  <div class="back-button">
+    <img src="arrow_left.svg" alt="Back" class="back-icon" (click)="goToRestaurants()" />
+  </div>
+  <h2 class=title> My cart</h2>
+
+</div>
+
+<div class="cart-container">
+  @for (item of cartItems; track item) {
+    <div class="cart-item">
+      <img [src]="item.image" alt="{{ item.name }}" class="item-image" />
+      <div class="item-details">
+        <h3 class="item-name">{{ item.name }}</h3>
+        <div class="item-actions">
+          @if (item.quantity === 1) {
+            <button class="remove-btn" (click)="removeItem(item)">🗑️</button>
+          }
+          @if (item.quantity > 1) {
+            <button class="quantity-btn" (click)="decreaseQuantity(item)">-</button>
+          }
+          <span class="quantity">{{ item.quantity }}</span>
+          <button class="quantity-btn" (click)="increaseQuantity(item)">+</button>
+        </div>
+      </div>
+      <p class="item-price">${{ item.price }}</p>
+    </div>
+  }
+
+  <div class="cart-summary">
+    <h4>Estimated Total</h4>
+    <h2>${{ calculateTotal() }}</h2>
+    <button class="pay-btn" (click)="payOrder()">Pay Order</button>
+  </div>
+</div>
