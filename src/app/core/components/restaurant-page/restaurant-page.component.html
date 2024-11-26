@@ -1,4 +1,15 @@
 <div class="restaurant-page">
+    <header class="header">
+        <div class="back-button">
+            <img src="arrow_left.svg" alt="Back" class="back-icon" (click)="goToHomePage()" />
+          </div>
+        <h3>512 Eats</h3>
+        <div class="basket">
+            <img src="basket.svg" alt="basket" (click)="goToCartPage()" />
+        </div>
+        
+    </header>
+    
     <!-- Restaurant Header -->
     <div class="restaurant-info">
         <p class="price-category">@for (item of [].constructor(restaurant.averagePrice); track $index) {$} ·
