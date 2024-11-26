@@ -38,8 +38,8 @@
 }
 
 .item-image {
-    width: 60px;
-    height: 60px;
+    width: 75px;
+    height: 75px;
     object-fit: cover;
     border-radius: 8px;
 }
@@ -121,6 +121,3 @@
     cursor: pointer;
 }
 
-.pay-btn:hover {
-    background-color: #e64a19;
-}
