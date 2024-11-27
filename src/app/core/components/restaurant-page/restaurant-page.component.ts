@@ -20,6 +20,7 @@ export class RestaurantPageComponent {
     }
     dishes = [
         {
+            quantity : 0,
             name: 'Margherita Pizza',
             description: 'Classic pizza with tomato sauce, mozzarella, and basil.',
             price: '$9',
@@ -27,6 +28,7 @@ export class RestaurantPageComponent {
             image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWwNz-YV88e3LFP6iisBcZT-loky1VotV4aQ&s',
         },
         {
+            quantity : 0,
             name: 'Spaghetti Carbonara',
             description: 'Traditional pasta with eggs, cheese, pancetta, and pepper.',
             price: '$12',
@@ -45,6 +47,17 @@ export class RestaurantPageComponent {
     goToCartPage(){
         this.router.navigate(['/cart']);
     }
+
+    increaseQuantity(item: any) {
+        item.quantity++;
+    }
+
+    decreaseQuantity(item: any) {
+        if (item.quantity > 0) {
+            item.quantity--;
+        }
+    }
+
 }
 
 

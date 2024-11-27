@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
     styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-    constructor(private router:Router){}
+    constructor(private router: Router) {}
     searchQuery: string = '';
     isOpenNow: boolean = true;
     categories: { name: string; icon: string }[] = [
@@ -27,7 +27,8 @@ export class HomeComponent {
         console.log('Toggle state:', this.isToggled);
     }
 
-    goToCartPage(){
+    goToCartPage() {
         this.router.navigate(['/cart']);
     }
+    
 }
