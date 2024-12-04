@@ -80,16 +80,13 @@ input:focus {
             margin-left: 2%;
             width: 100%;
         }
-        #validateGroupOrderId {
-            display: none;
-        }
     }
     .group-code {
         background: #f3e9e7;
         border: none;
         cursor: pointer;
     }
-    .buttonGroupOrder{
+    .buttonGroupOrder {
         font-size: 0.7em;
         display: flex;
         padding: 3.4%;
@@ -99,17 +96,13 @@ input:focus {
         border-radius: 20px;
         cursor: pointer;
         width: 140px;
-        max-height: 41px ;
+        max-height: 41px;
         justify-content: space-evenly;
         align-items: center;
-        img{
+        img {
             width: 25px;
             margin-right: 3%;
         }
-    }
-    #deleteGroupOrderButton {
-        display: none;
-        
     }
 }
 

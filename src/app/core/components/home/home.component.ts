@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -18,6 +18,8 @@ export class HomeComponent {
     ];
     selectedCategory: string = 'Burgers';
     isToggled: boolean = false;
+    idGroupOrder: string = '';
+    @ViewChild('inputGroupId') inputGroupOrder!: ElementRef;
 
     selectCategory(category: string): void {
         this.selectedCategory = category;
@@ -32,32 +34,19 @@ export class HomeComponent {
     }
 
     joinGroupOrder() {
-        const groupOrderButton = document.getElementById('groupOrderButton');
-        const groupOrderCheck = document.getElementById('validateGroupOrderId');
-        const groupOrderDelete = document.getElementById('deleteGroupOrderButton');
-        if (groupOrderButton) {
-            groupOrderButton.style.display = 'none';
+        if (
+            this.inputGroupOrder.nativeElement.value === '' ||
+            this.inputGroupOrder.nativeElement.value.length != 6
+        ) {
+            return;
         }
-        if (groupOrderCheck) {
-            groupOrderCheck.style.display = 'block';
-        }
-        if (groupOrderDelete) {
-            groupOrderDelete.style.display = 'flex';
-        }
+        console.log(this.inputGroupOrder);
+
+        console.log('Joining group order:', this.inputGroupOrder.nativeElement.value.length != 6);
+        this.idGroupOrder = this.inputGroupOrder.nativeElement.value;
     }
 
     deleteGroupOrder() {
-        const groupOrderButton = document.getElementById('groupOrderButton');
-        const groupOrderCheck = document.getElementById('validateGroupOrderId');
-        const groupOrderDelete = document.getElementById('deleteGroupOrderButton');
-        if (groupOrderButton) {
-            groupOrderButton.style.display = 'flex';
-        }
-        if (groupOrderCheck) {
-            groupOrderCheck.style.display = 'none';
-        }
-        if (groupOrderDelete) {
-            groupOrderDelete.style.display = 'none';
-        }
+        this.idGroupOrder = '';
     }
 }
