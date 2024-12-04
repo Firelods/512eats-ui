@@ -20,10 +20,23 @@
     <div class="group-order">
         <div class="group-order-input">
             <img src="group.svg" alt="group">
-            <input type="text" placeholder="#010203" class="group-code" />
+            <input [disabled]="idGroupOrder !== ''" #inputGroupId type="text" placeholder="010203" class="group-code" />
+            @if (idGroupOrder!== '') {
+            <img id="validateGroupOrderId" src="check.svg" alt="check">
+            }
         </div>
+        @if (idGroupOrder === '' ) {
+        <button class="buttonGroupOrder" (click)="joinGroupOrder()">
+            <img id="joinGroupOrderId" src="login.svg" alt="login" />
+            Join group order</button>
+        }
+        @else {
+        <button class="buttonGroupOrder" (click)="deleteGroupOrder()">
+            <img id="deleteGroupOrderId" src="logout.svg" alt="logout" />
+            Exit group order
+        </button>
+        }
 
-        <button class="join-btn">Join group order</button>
     </div>
 
     <div class="search-bar">

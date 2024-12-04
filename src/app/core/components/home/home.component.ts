@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
     styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-    constructor(private router:Router){}
+    constructor(private router: Router) {}
     searchQuery: string = '';
     isOpenNow: boolean = true;
     categories: { name: string; icon: string }[] = [
@@ -18,6 +18,8 @@ export class HomeComponent {
     ];
     selectedCategory: string = 'Burgers';
     isToggled: boolean = false;
+    idGroupOrder: string = '';
+    @ViewChild('inputGroupId') inputGroupOrder!: ElementRef;
 
     selectCategory(category: string): void {
         this.selectedCategory = category;
@@ -27,7 +29,24 @@ export class HomeComponent {
         console.log('Toggle state:', this.isToggled);
     }
 
-    goToCartPage(){
+    goToCartPage() {
         this.router.navigate(['/cart']);
+    }
+
+    joinGroupOrder() {
+        if (
+            this.inputGroupOrder.nativeElement.value === '' ||
+            this.inputGroupOrder.nativeElement.value.length != 6
+        ) {
+            return;
+        }
+        console.log(this.inputGroupOrder);
+
+        console.log('Joining group order:', this.inputGroupOrder.nativeElement.value.length != 6);
+        this.idGroupOrder = this.inputGroupOrder.nativeElement.value;
+    }
+
+    deleteGroupOrder() {
+        this.idGroupOrder = '';
     }
 }

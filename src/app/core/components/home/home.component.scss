@@ -74,8 +74,11 @@ input:focus {
         background: #f3e9e7;
         border-radius: 20px;
         margin-right: 2%;
+        max-width: 224px;
+        max-height: 37px;
         .group-code {
             margin-left: 2%;
+            width: 100%;
         }
     }
     .group-code {
@@ -83,14 +86,23 @@ input:focus {
         border: none;
         cursor: pointer;
     }
-    .join-btn {
+    .buttonGroupOrder {
         font-size: 0.7em;
+        display: flex;
         padding: 3.4%;
         background-color: #796864;
         color: white;
         border: #796864;
         border-radius: 20px;
         cursor: pointer;
+        width: 140px;
+        max-height: 41px;
+        justify-content: space-evenly;
+        align-items: center;
+        img {
+            width: 25px;
+            margin-right: 3%;
+        }
     }
 }
 
@@ -204,7 +216,6 @@ input:focus {
     border-radius: 20px;
     cursor: pointer;
     background-color: #ffffff;
-   
 }
 
 .category.active {
@@ -218,5 +229,3 @@ input:focus {
     width: 20px;
     height: 20px;
 }*/
-
-
