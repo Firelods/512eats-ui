@@ -3,18 +3,19 @@
     <div class="restaurant-card">
         <div class="restaurant-header">
             <h2>{{ restaurant.name }}</h2>
-            <p>{{ restaurant.averagePrice }} • {{ restaurant.foodTypeList }}</p>
+            <p>
+                @for (item of [].constructor(restaurant.averagePrice); track $index) {$}
+                • {{ restaurant.foodTypeList.join(', ') }}</p>
         </div>
         <div class="restaurant-images">
+            @for (image of restaurant.dishPictureURLListSample; track image) {
             <img
-                [src]="restaurant.dishPictureURLListSample"
-                alt="{{ restaurant.name }} main image"
+                [src]="image"
+                [class.main-image]="restaurant.dishPictureURLListSample[0] === image"
+                [class.secondary-image]="restaurant.dishPictureURLListSample[0] !== image"
+                alt="{{ restaurant.name }} image"
             />
-            <div class="secondary-images">
-                @for (image of restaurant.dishPictureURLListSample.shift(); track image) {
-                <img [src]="image" alt="Secondary image" />
-                }
-            </div>
+            }
         </div>
     </div>
     }
