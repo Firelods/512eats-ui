@@ -20,6 +20,7 @@ export class HomeComponent {
     isToggled: boolean = false;
     idGroupOrder: string = '';
     @ViewChild('inputGroupId') inputGroupOrder!: ElementRef;
+    @ViewChild('notifGroupOrder') notifGroupOrder!: ElementRef;
 
     selectCategory(category: string): void {
         this.selectedCategory = category;
@@ -40,13 +41,27 @@ export class HomeComponent {
         ) {
             return;
         }
-        console.log(this.inputGroupOrder);
-
-        console.log('Joining group order:', this.inputGroupOrder.nativeElement.value.length != 6);
         this.idGroupOrder = this.inputGroupOrder.nativeElement.value;
+        this.notifGroupOrder.nativeElement.style.display = 'block';
+        this.notifGroupOrder.nativeElement.innerText =
+            'Vous avez bien rejoint la group order #' + this.idGroupOrder;
+        setTimeout(() => {
+            this.notifGroupOrder.nativeElement.style.display = 'none';
+        }, 5000);
     }
 
     deleteGroupOrder() {
         this.idGroupOrder = '';
+    }
+
+    createGroupOrder() {
+        this.idGroupOrder = '512512'; // recuperer la groupid depuis le backend
+        this.inputGroupOrder.nativeElement.value = this.idGroupOrder;
+        this.notifGroupOrder.nativeElement.style.display = 'block';
+        this.notifGroupOrder.nativeElement.innerText =
+            'Vous avez bien créé et rejoint la group order #' + this.idGroupOrder;
+        setTimeout(() => {
+            this.notifGroupOrder.nativeElement.style.display = 'none';
+        }, 5000);
     }
 }
