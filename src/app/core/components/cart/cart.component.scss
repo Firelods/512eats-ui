@@ -1,6 +1,6 @@
 .header {
     background-color: #fff;
-    padding-top: 5%;
+    
     display: grid;
     position:sticky;
     top : 0px;
@@ -8,6 +8,7 @@
     margin-bottom: 16px;
     height: 80px;
     border-bottom:1px solid #848484;
+    padding:20px;
 }
 .back-button {
     grid-column: 1/2;
@@ -26,6 +27,7 @@
     max-width: 500px;
     margin-top: 10%;
     padding: 0 16px;
+    padding:20px;
 }
 
 .cart-item {
@@ -61,6 +63,10 @@
     margin-top: 8px;
     border: 1px solid #848484;
     border-radius: 7%;
+    .remove-btn{
+        width:24px;
+        height:24px;
+    }
 }
 
 .quantity-btn {
