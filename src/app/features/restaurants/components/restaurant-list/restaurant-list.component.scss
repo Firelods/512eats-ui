@@ -1,14 +1,19 @@
 .restaurant-list {
+    padding-top: 5vh;
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
+    justify-content: center;
 }
 
 .restaurant-card {
     background: #fff;
     border-radius: 8px;
+    border: 1px solid rgba(110, 80, 73, 0.20);
+    background: #FFFDFC;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 300px;
+
+    width: 90%;
     padding: 16px;
     display: flex;
     flex-direction: column;
@@ -30,22 +35,26 @@
 
 .restaurant-images {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    gap: 8px;
+    flex-wrap: wrap;
 
     img {
         width: 100%;
         border-radius: 8px;
-        margin-bottom: 8px;
         object-fit: cover;
     }
 
-    .secondary-images {
-        display: flex;
-        gap: 8px;
+    .main-image {
+        width: 100%;
+        height: auto;
+        display: block;
+        margin-bottom: 10px;
+    }
 
-        img {
-            width: 48%;
-            border-radius: 8px;
-        }
+    .secondary-image {
+
+        width: 48%;
+        border-radius: 8px;
     }
 }
