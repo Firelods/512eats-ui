@@ -30,5 +30,34 @@ export class HomeComponent {
     goToCartPage() {
         this.router.navigate(['/cart']);
     }
-    
+
+    joinGroupOrder() {
+        const groupOrderButton = document.getElementById('groupOrderButton');
+        const groupOrderCheck = document.getElementById('validateGroupOrderId');
+        const groupOrderDelete = document.getElementById('deleteGroupOrderButton');
+        if (groupOrderButton) {
+            groupOrderButton.style.display = 'none';
+        }
+        if (groupOrderCheck) {
+            groupOrderCheck.style.display = 'block';
+        }
+        if (groupOrderDelete) {
+            groupOrderDelete.style.display = 'flex';
+        }
+    }
+
+    deleteGroupOrder() {
+        const groupOrderButton = document.getElementById('groupOrderButton');
+        const groupOrderCheck = document.getElementById('validateGroupOrderId');
+        const groupOrderDelete = document.getElementById('deleteGroupOrderButton');
+        if (groupOrderButton) {
+            groupOrderButton.style.display = 'flex';
+        }
+        if (groupOrderCheck) {
+            groupOrderCheck.style.display = 'none';
+        }
+        if (groupOrderDelete) {
+            groupOrderDelete.style.display = 'none';
+        }
+    }
 }

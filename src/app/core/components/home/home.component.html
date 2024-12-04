@@ -21,9 +21,16 @@
         <div class="group-order-input">
             <img src="group.svg" alt="group">
             <input type="text" placeholder="#010203" class="group-code" />
+            <img id="validateGroupOrderId"src="check.svg" alt="check">
         </div>
 
-        <button class="join-btn">Join group order</button>
+        <button class="buttonGroupOrder" id="groupOrderButton" (click)="joinGroupOrder()">
+            <img id="joinGroupOrderId"src="login.svg" alt="login"/>
+            Join group order</button>
+        <button class="buttonGroupOrder" id="deleteGroupOrderButton" (click)="deleteGroupOrder()">
+            <img id="deleteGroupOrderId"src="logout.svg" alt="logout"/>
+            Exit group order 
+        </button>
     </div>
 
     <div class="search-bar">
