@@ -1,3 +1,5 @@
+import { Dish } from './dish.model';
+
 export interface Restaurant {
     id: number;
     name: string;
@@ -7,4 +9,5 @@ export interface Restaurant {
     averagePrice: number;
     description: string;
     dishPictureURLListSample: string[];
+    dishes?: Dish[];
 }

@@ -7,6 +7,7 @@ import { RestaurantEffects } from './store/restaurant.effects';
 import { RestaurantListComponent } from './components/restaurant-list/restaurant-list.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { provideHttpClient } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
     declarations: [RestaurantListComponent],
@@ -15,6 +16,7 @@ import { provideHttpClient } from '@angular/common/http';
         BrowserModule,
         StoreModule.forFeature(fromRestaurant.restaurantsFeatureKey, fromRestaurant.reducer),
         EffectsModule.forFeature([RestaurantEffects]),
+        RouterModule,
     ],
     exports: [RestaurantListComponent],
     providers: [provideHttpClient()],

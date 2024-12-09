@@ -1,4 +1,4 @@
-<div class="restaurant-page">
+<div class="container">
     <header class="header">
         <div class="back-button">
             <img src="arrow_left.svg" alt="Back" class="back-icon" (click)="goToHomePage()" />
@@ -7,18 +7,20 @@
         <div class="basket">
             <img src="basket.svg" alt="basket" (click)="goToCartPage()" />
         </div>
-
     </header>
 
     <!-- Restaurant Header -->
     <div class="restaurant-info">
-        <p class="price-category">@for (dish of [].constructor(restaurant.averagePrice); track $index) {$} ·
-            {{restaurant.foodTypeList}}</p>
-        <h1 class="name">{{restaurant.name}}</h1>
-        <p class="opening-hours">Opening time: Mon-Fri, {{restaurant.openTime}} - {{restaurant.closeTime}}</p>
-        <p class="description">{{restaurant.description}}</p>
+        <p class="price-category">
+            @for (dish of [].constructor(restaurant.averagePrice); track $index) {$} ·
+            {{ restaurant.foodTypeList }}
+        </p>
+        <h1 class="name">{{ restaurant.name }}</h1>
+        <p class="opening-hours">
+            Opening time: Mon-Fri, {{ restaurant.openTime }} - {{ restaurant.closeTime }}
+        </p>
+        <p class="description">{{ restaurant.description }}</p>
     </div>
-
 
     <div class="menu">
         <h2>Menu</h2>
@@ -30,10 +32,9 @@
                 <p class="dish-price">{{ dish.price }} · {{ dish.time }}</p>
                 @if (dish.quantity === 0) {
                 <button class="add-btn" (click)="increaseQuantity(dish)">
-                    <img src=basket.svg alt="basket" class="basket" />
+                    <img src="basket.svg" alt="basket" class="basket" />
                 </button>
-                }
-                @else {
+                } @else {
                 <div class="dish-actions">
                     <button class="quantity-btn" (click)="decreaseQuantity(dish)">-</button>
                     <span class="quantity">{{ dish.quantity }}</span>
@@ -41,8 +42,7 @@
                 </div>
                 }
             </div>
-            <img src={{dish.image}} [alt]="dish.name" class="dish-image" />
-
+            <img src="{{ dish.image }}" [alt]="dish.name" class="dish-image" />
         </div>
         }
     </div>
