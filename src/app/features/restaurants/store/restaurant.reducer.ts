@@ -1,7 +1,7 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Restaurant } from './restaurant.model';
-import { RestaurantActions } from './restaurant.actions';
+import { DishActions, RestaurantActions } from './restaurant.actions';
 
 export const restaurantsFeatureKey = 'restaurants';
 
@@ -50,7 +50,18 @@ export const reducer = createReducer(
         error,
     })),
 
-    on(RestaurantActions.clearRestaurants, (state) => adapter.removeAll(state))
+    on(RestaurantActions.clearRestaurants, (state) => adapter.removeAll(state)),
+    on(DishActions.loadAvailableDishesSuccess, (state, { dishes, restaurantId }) =>
+        adapter.updateOne(
+            {
+                id: restaurantId,
+                changes: {
+                    dishes, // Ajoute les dishes directement au restaurant.
+                },
+            },
+            state
+        )
+    )
 );
 
 export const restaurantsFeature = createFeature({

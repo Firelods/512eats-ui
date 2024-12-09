@@ -25,8 +25,12 @@ export const RestaurantActions = createActionGroup({
 export const DishActions = createActionGroup({
     source: 'Dish/API',
     events: {
-        'Load Available Dishes': props<{ restaurantId: number }>(),
-        'Load Available Dishes Success': props<{ dishes: Dish[]; restaurantId: number }>(),
+        'Load Available Dishes': props<{ restaurantId?: number; orderId?: number }>(),
+        'Load Available Dishes Success': props<{
+            dishes: Dish[];
+            restaurantId: number;
+            orderId?: number;
+        }>(),
         'Load Available Dishes Failure': props<{ error: any }>(),
     },
 });

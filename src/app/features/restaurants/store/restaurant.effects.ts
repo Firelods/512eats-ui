@@ -30,17 +30,51 @@ export class RestaurantEffects {
         this.loadAvailableDishes$ = createEffect(() => {
             return this.actions$.pipe(
                 ofType(DishActions.loadAvailableDishes),
-                concatMap((action) =>
-                    this.restaurantService.getAvailableDishes(action.restaurantId).pipe(
-                        map((dishes) =>
-                            DishActions.loadAvailableDishesSuccess({
-                                dishes,
-                                restaurantId: action.restaurantId,
+                concatMap((action) => {
+                    if (action.restaurantId && !action.orderId) {
+                        console.log('action.restaurantId', action.restaurantId);
+
+                        return this.restaurantService
+                            .getAllDishesFromRestaurant(action.restaurantId)
+                            .pipe(
+                                map((dishes) =>
+                                    DishActions.loadAvailableDishesSuccess({
+                                        dishes,
+                                        restaurantId: action.restaurantId!,
+                                    })
+                                ),
+                                catchError((error) =>
+                                    of(DishActions.loadAvailableDishesFailure({ error }))
+                                )
+                            );
+                    } else {
+                        console.log('action.orderId', action.orderId);
+
+                        if (action.orderId == undefined || action.restaurantId == undefined) {
+                            console.log('No orderId or restaurantId provided, returning EMPTY');
+                            console.log('action:', action);
+
+                            return EMPTY;
+                        }
+                        console.log('Fetching available dishes for orderId:', action.orderId);
+                        return this.restaurantService.getAvailableDishes(action.orderId).pipe(
+                            map((dishes) => {
+                                console.log('Fetched dishes:', dishes);
+                                return DishActions.loadAvailableDishesSuccess({
+                                    dishes,
+                                    restaurantId: action.restaurantId!,
+                                    orderId: action.orderId!,
+                                });
+                            }),
+                            catchError((error) => {
+                                console.log('Error fetching available dishes:', error);
+
+                                console.error('Error fetching available dishes:', error);
+                                return of(DishActions.loadAvailableDishesFailure({ error }));
                             })
-                        ),
-                        catchError((error) => of(DishActions.loadAvailableDishesFailure({ error })))
-                    )
-                )
+                        );
+                    }
+                })
             );
         });
     }

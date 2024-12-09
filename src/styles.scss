@@ -1,4 +1,16 @@
+@use '@angular/material' as mat;
+@include mat.core();
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+
+$my-theme: mat.define-theme((color: (theme-type: light,
+                primary: mat.$red-palette,
+            ),
+        ));
+
+html {
+    color-scheme: light dark;
+    @include mat.all-component-themes($my-theme);
+}
 
 * {
     margin: 0;

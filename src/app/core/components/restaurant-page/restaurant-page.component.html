@@ -21,30 +21,30 @@
             </p>
             <p class="description">{{ restaurant.description }}</p>
         </div>
-    </ng-container>
 
-    <div class="menu">
-        <h2>Menu</h2>
-        @for(dish of dishes; track $index){
-        <div class="menu-dish">
-            <div class="menu-info">
-                <h3 class="dish-name">{{ dish.name }}</h3>
-                <p class="dish-description">{{ dish.description }}</p>
-                <p class="dish-price">{{ dish.price }} · {{ dish.time }}</p>
-                @if (dish.quantity === 0) {
-                <button class="add-btn" (click)="increaseQuantity(dish)">
-                    <img src="basket.svg" alt="basket" class="basket" />
-                </button>
-                } @else {
-                <div class="dish-actions">
-                    <button class="quantity-btn" (click)="decreaseQuantity(dish)">-</button>
-                    <span class="quantity">{{ dish.quantity }}</span>
-                    <button class="quantity-btn" (click)="increaseQuantity(dish)">+</button>
+        <div class="menu">
+            <h2>Menu</h2>
+            @for(dish of restaurant.dishes; track $index){
+            <div class="menu-dish">
+                <div class="menu-info">
+                    <h3 class="dish-name">{{ dish.name }}</h3>
+                    <p class="dish-description">{{ dish.description }}</p>
+                    <p class="dish-price">{{ dish.price }} · {{ dish.preparationTime }}</p>
+                    @if (dish.quantity === 0) {
+                    <button class="add-btn" (click)="increaseQuantity(dish)">
+                        <img src="basket.svg" alt="basket" class="basket" />
+                    </button>
+                    } @else {
+                    <div class="dish-actions">
+                        <button class="quantity-btn" (click)="decreaseQuantity(dish)">-</button>
+                        <span class="quantity">{{ dish.quantity }}</span>
+                        <button class="quantity-btn" (click)="increaseQuantity(dish)">+</button>
+                    </div>
+                    }
                 </div>
-                }
+                <img src="{{ dish.pictureURL }}" [alt]="dish.name" class="dish-image" />
             </div>
-            <img src="{{ dish.image }}" [alt]="dish.name" class="dish-image" />
+            }
         </div>
-        }
-    </div>
+    </ng-container>
 </div>

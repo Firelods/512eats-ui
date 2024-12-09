@@ -26,6 +26,7 @@
     align-items: center;
     padding: 2%;
     border-bottom: 1px solid #ddd;
+
     .pin {
         padding: 3%;
         background-color: #f3e9e7;
@@ -54,15 +55,17 @@
 input:focus {
     outline: none;
 }
+
 .group-order-settings {
-    padding:2%;
+    padding: 2%;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 5px;
     border-bottom: 1px solid #ddd;
-    .notif-group-order{
-        display:none;
+
+    .notif-group-order {
+        display: none;
         font-size: 0.8em;
         font-weight: bold;
     }
@@ -72,6 +75,7 @@ input:focus {
     display: flex;
     align-items: center;
     margin: 2%;
+
     .group-order-input {
         flex: 1;
         display: flex;
@@ -110,6 +114,7 @@ input:focus {
     max-height: 41px;
     justify-content: space-evenly;
     align-items: center;
+
     img {
         width: 25px;
         margin-right: 3%;
@@ -130,7 +135,8 @@ input:focus {
     margin: 2%;
     margin-bottom: 7%;
 
-    margin-top:4%;
+    margin-top: 4%;
+
     input {
         margin-right: 2%;
         flex: 1;
@@ -248,8 +254,19 @@ input:focus {
     color: white;
 }
 
-/*
-.category-icon {
-    width: 20px;
-    height: 20px;
-}*/
+.container-search {
+    transition: all 0.3s ease;
+    opacity: 1;
+}
+
+.container-search.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.bottom-button-choices {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}

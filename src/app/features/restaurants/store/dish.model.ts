@@ -5,4 +5,5 @@ export interface Dish {
     price: number;
     preparationTime: number;
     pictureURL: string;
+    quantity?: number;
 }

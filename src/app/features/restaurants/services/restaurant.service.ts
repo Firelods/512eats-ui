@@ -3,21 +3,21 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Restaurant } from '../store/restaurant.model';
 import { Dish } from '../store/dish.model';
-
+import { environment } from '../../../../environment';
 @Injectable({
     providedIn: 'root',
 })
 export class RestaurantService {
-    private apiUrl = 'http://localhost:8081';
-
     constructor(private http: HttpClient) {}
 
     getRestaurants(): Observable<Restaurant[]> {
-        return this.http.get<Restaurant[]>(this.apiUrl + '/restaurants');
+        return this.http.get<Restaurant[]>(environment.apiUrl + '/restaurants');
     }
 
-    getAvailableDishes(restaurantId: number): Observable<Dish[]> {
-        // return this.http.get<Dish[]>(`${this.apiUrl}/available-dishes?restaurant-id=${restaurantId}`);
+    getAvailableDishes(orderId: number): Observable<Dish[]> {
+        return this.http.get<Dish[]>(
+            `${environment.apiUrl}/orders/available-dishes?order-id=${orderId}`
+        );
         return of([
             {
                 id: 1,
@@ -38,5 +38,9 @@ export class RestaurantService {
                     'https://assets.afcdn.com/recipe/20211214/125831_w1024h1024c1cx866cy866cxt0cyt292cxb1732cyb1732.jpg',
             },
         ]);
+    }
+
+    getAllDishesFromRestaurant(restaurantId: number): Observable<Dish[]> {
+        return this.http.get<Dish[]>(`${environment.apiUrl}/dishes?restaurant-id=${restaurantId}`);
     }
 }
