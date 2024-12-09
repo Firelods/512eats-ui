@@ -1,8 +1,8 @@
 <div class="restaurant-list">
-    @for (restaurant of restaurants$ | async; track restaurant) {
+    @for (restaurant of restaurants$ | async; track restaurant.id) {
     <div
         class="restaurant-card"
-        [routerLink]="['/restaurant']"
+        [routerLink]="['/restaurant', restaurant.id]"
         routerLinkActive="router-link-active"
     >
         <div class="restaurant-header">

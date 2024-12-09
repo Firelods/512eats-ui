@@ -8,19 +8,20 @@
             <img src="basket.svg" alt="basket" (click)="goToCartPage()" />
         </div>
     </header>
-
-    <!-- Restaurant Header -->
-    <div class="restaurant-info">
-        <p class="price-category">
-            @for (dish of [].constructor(restaurant.averagePrice); track $index) {$} ·
-            {{ restaurant.foodTypeList }}
-        </p>
-        <h1 class="name">{{ restaurant.name }}</h1>
-        <p class="opening-hours">
-            Opening time: Mon-Fri, {{ restaurant.openTime }} - {{ restaurant.closeTime }}
-        </p>
-        <p class="description">{{ restaurant.description }}</p>
-    </div>
+    <ng-container *ngIf="$restaurant | async as restaurant">
+        <!-- Restaurant Header -->
+        <div class="restaurant-info">
+            <p class="price-category">
+                @for (dish of [].constructor(restaurant.averagePrice); track $index) {$} ·
+                {{ restaurant.foodTypeList }}
+            </p>
+            <h1 class="name">{{ restaurant.name }}</h1>
+            <p class="opening-hours">
+                Opening time: Mon-Fri, {{ restaurant.openTime }} - {{ restaurant.closeTime }}
+            </p>
+            <p class="description">{{ restaurant.description }}</p>
+        </div>
+    </ng-container>
 
     <div class="menu">
         <h2>Menu</h2>
