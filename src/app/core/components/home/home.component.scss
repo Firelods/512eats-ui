@@ -34,7 +34,8 @@
 .delivery-info {
     display: flex;
     align-items: center;
-    margin: 5% 2%;
+    padding: 2%;
+    border-bottom: 1px solid #ddd;
     .pin {
         padding: 3%;
         background-color: #f3e9e7;
@@ -60,12 +61,24 @@
 input:focus {
     outline: none;
 }
+.group-order-settings {
+    padding:2%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    border-bottom: 1px solid #ddd;
+    .notif-group-order{
+        display:none;
+        font-size: 0.8em;
+        font-weight: bold;
+    }
+}
 
-.group-order {
+.join-group-order {
     display: flex;
     align-items: center;
     margin: 2%;
-    margin-bottom: 10%;
     .group-order-input {
         flex: 1;
         display: flex;
@@ -86,30 +99,41 @@ input:focus {
         border: none;
         cursor: pointer;
     }
-    .buttonGroupOrder {
-        font-size: 0.7em;
-        display: flex;
-        padding: 3.4%;
-        background-color: #796864;
-        color: white;
-        border: #796864;
-        border-radius: 20px;
-        cursor: pointer;
-        width: 140px;
-        max-height: 41px;
-        justify-content: space-evenly;
-        align-items: center;
-        img {
-            width: 25px;
-            margin-right: 3%;
-        }
+}
+
+.buttonGroupOrder {
+    font-size: 0.7em;
+    display: flex;
+    padding: 4%;
+    min-height: 40px;
+    background-color: #796864;
+    color: white;
+    border: #796864;
+    border-radius: 20px;
+    cursor: pointer;
+    width: 140px;
+    max-height: 41px;
+    justify-content: space-evenly;
+    align-items: center;
+    img {
+        width: 25px;
+        margin-right: 3%;
     }
+}
+
+.create-group-order {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    margin: 2%;
+
 }
 
 .search-bar {
     display: flex;
     margin: 2%;
-    margin-bottom: 7%;
+    margin-top:4%;
     input {
         margin-right: 2%;
         flex: 1;
