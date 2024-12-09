@@ -29,17 +29,19 @@
                 <div class="menu-info">
                     <h3 class="dish-name">{{ dish.name }}</h3>
                     <p class="dish-description">{{ dish.description }}</p>
-                    <p class="dish-price">{{ dish.price }} · {{ dish.preparationTime }}</p>
-                    @if (dish.quantity === 0) {
+                    <p class="dish-price">{{ dish.price }}€ · {{ dish.preparationTime }}min</p>
+                    @if (subOrder) {
+                    @if (getDishQuantity(dish.id) === 0) {
                     <button class="add-btn" (click)="increaseQuantity(dish)">
                         <img src="basket.svg" alt="basket" class="basket" />
                     </button>
                     } @else {
                     <div class="dish-actions">
                         <button class="quantity-btn" (click)="decreaseQuantity(dish)">-</button>
-                        <span class="quantity">{{ dish.quantity }}</span>
+                        <span class="quantity">{{ getDishQuantity(dish.id) }}</span>
                         <button class="quantity-btn" (click)="increaseQuantity(dish)">+</button>
                     </div>
+                    }
                     }
                 </div>
                 <img src="{{ dish.pictureURL }}" [alt]="dish.name" class="dish-image" />

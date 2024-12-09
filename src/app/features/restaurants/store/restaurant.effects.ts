@@ -4,6 +4,7 @@ import { catchError, map, concatMap } from 'rxjs/operators';
 import { Observable, EMPTY, of } from 'rxjs';
 import { DishActions, RestaurantActions } from './restaurant.actions';
 import { RestaurantService } from '../services/restaurant.service';
+import { Dish } from './dish.model';
 
 @Injectable()
 export class RestaurantEffects {
@@ -56,19 +57,18 @@ export class RestaurantEffects {
 
                             return EMPTY;
                         }
+                        localStorage.setItem('orderId', action.orderId.toString());
                         console.log('Fetching available dishes for orderId:', action.orderId);
                         return this.restaurantService.getAvailableDishes(action.orderId).pipe(
                             map((dishes) => {
                                 console.log('Fetched dishes:', dishes);
                                 return DishActions.loadAvailableDishesSuccess({
-                                    dishes,
+                                    dishes: dishes,
                                     restaurantId: action.restaurantId!,
                                     orderId: action.orderId!,
                                 });
                             }),
                             catchError((error) => {
-                                console.log('Error fetching available dishes:', error);
-
                                 console.error('Error fetching available dishes:', error);
                                 return of(DishActions.loadAvailableDishesFailure({ error }));
                             })
