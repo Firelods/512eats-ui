@@ -39,7 +39,7 @@
             <h4>Total</h4>
             <h2>${{ calculateTotal() }}</h2>
             @if (subOrder.status==="PAID") {
-            <button class="pay-btn" (click)="closeGroupOrder()">Close Group Order</button>
+            <button class="pay-btn" (click)="closeGroupOrder()">Validate Group Order</button>
             }
             @if (subOrder.status==="PLACED") {
             <h3>Order Placed</h3>
