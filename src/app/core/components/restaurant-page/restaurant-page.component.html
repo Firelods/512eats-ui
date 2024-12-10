@@ -13,7 +13,10 @@
         <div class="restaurant-info">
             <p class="price-category">
                 @for (dish of [].constructor(restaurant.averagePrice); track $index) {$} ·
-                {{ restaurant.foodTypeList }}
+                @for (item of restaurant.foodTypeList; track $index) {
+                {{ item }} 
+                }
+                
             </p>
             <h1 class="name">{{ restaurant.name }}</h1>
             <p class="opening-hours">
