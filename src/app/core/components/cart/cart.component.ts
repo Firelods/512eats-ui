@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { OrderService } from '../../services/order.service';
+import { Dish } from '../../../features/restaurants/store/dish.model';
+import { SubOrder } from '../../../features/restaurants/store/suborder.model';
 
 @Component({
     selector: 'app-cart',
@@ -7,84 +10,63 @@ import { Router } from '@angular/router';
     styleUrls: ['./cart.component.scss'],
 })
 export class CartComponent {
-    constructor(private router: Router) {}
-    cartItems = [
-        {
-            name: 'Margherita Pizza',
-            price: 12,
-            quantity: 1,
-            image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWwNz-YV88e3LFP6iisBcZT-loky1VotV4aQ&s',
-        },
-        {
-            name: 'Spaghetti Carbonara',
-            price: 24,
-            quantity: 1,
-            image: 'https://assets.afcdn.com/recipe/20211214/125831_w1024h1024c1cx866cy866cxt0cyt292cxb1732cyb1732.jpg',
-        },
-        {
-            name: 'Caesar Salad',
-            price: 10,
-            quantity: 1,
-            image: 'https://img.cuisineaz.com/1024x576/2022/07/18/i184733-shutterstock-95710738.webp',
-        },
-        {
-          name: 'Margherita Pizza',
-          price: 12,
-          quantity: 1,
-          image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWwNz-YV88e3LFP6iisBcZT-loky1VotV4aQ&s',
-      },
-      {
-          name: 'Spaghetti Carbonara',
-          price: 24,
-          quantity: 1,
-          image: 'https://assets.afcdn.com/recipe/20211214/125831_w1024h1024c1cx866cy866cxt0cyt292cxb1732cyb1732.jpg',
-      },
-      {
-          name: 'Caesar Salad',
-          price: 10,
-          quantity: 1,
-          image: 'https://img.cuisineaz.com/1024x576/2022/07/18/i184733-shutterstock-95710738.webp',
-      },
-      {
-        name: 'Margherita Pizza',
-        price: 12,
-        quantity: 1,
-        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWwNz-YV88e3LFP6iisBcZT-loky1VotV4aQ&s',
-    },
-    {
-        name: 'Spaghetti Carbonara',
-        price: 24,
-        quantity: 1,
-        image: 'https://assets.afcdn.com/recipe/20211214/125831_w1024h1024c1cx866cy866cxt0cyt292cxb1732cyb1732.jpg',
-    },
-    {
-        name: 'Caesar Salad',
-        price: 10,
-        quantity: 1,
-        image: 'https://img.cuisineaz.com/1024x576/2022/07/18/i184733-shutterstock-95710738.webp',
-    },
-    ];
+    subOrder: SubOrder | undefined;
 
-    increaseQuantity(item: any) {
-        item.quantity++;
-    }
-
-    decreaseQuantity(item: any) {
-        if (item.quantity > 1) {
-            item.quantity--;
+    constructor(private router: Router, private orderService: OrderService) {
+        this.orderService.subOrder.subscribe((subOrder) => {
+            this.subOrder = subOrder;
+        });
+        let orderId = localStorage.getItem('orderId');
+        if (orderId !== null) {
+            this.orderService.loadSubOrder(parseInt(orderId));
         }
     }
 
-    removeItem(item: any) {
-        this.cartItems = this.cartItems.filter((i) => i !== item);
+    increaseQuantity(item: Dish) {
+        this.orderService.addDishToSubOrder(item.id);
+    }
+
+    decreaseQuantity(item: Dish) {
+        this.orderService.removeDishFromSubOrder(item.id);
     }
 
     calculateTotal(): number {
-        return this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+        if (!this.subOrder) {
+            return 0;
+        }
+        return this.subOrder.dishes.reduce((total, item) => total + item.price * item.quantity, 0);
     }
 
     payOrder() {
-        alert('Order placed successfully!');
+        this.orderService.paySubOrder().subscribe({
+            next: () => {
+                this.orderService.openSnackBar('Order paid successfully');
+                if (this.subOrder) {
+                    this.orderService.loadSubOrder(this.subOrder.id);
+                }
+            },
+            error: (error) => {
+                console.error('Error paying order:', error);
+                this.orderService.openSnackBar('Error paying order', 'Close');
+            },
+        });
+    }
+
+    closeGroupOrder() {
+        this.orderService.placeGroupOrder()?.subscribe({
+            next: (response) => {
+                this.orderService.openSnackBar('Group order placed successfully');
+                if (!this.subOrder) {
+                    return;
+                }
+                this.orderService.loadSubOrder(this.subOrder.id);
+                // this.router.navigate(['/group-order', orderId]);
+            },
+            error: (error) => {
+                console.error('Error placing group order:', error);
+                this.orderService.openSnackBar('Error placing group order', 'Close');
+            },
+        });
     }
 
     goToRestaurants() {

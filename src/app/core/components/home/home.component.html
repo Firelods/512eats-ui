@@ -1,40 +1,38 @@
 <div class="container">
     <header class="header">
-        <h3>512 Eats</h3>
+        <h3 (click)="resetOrder()">512 Eats</h3>
         <div class="basket">
             <img src="basket.svg" alt="basket" (click)="goToCartPage()" />
         </div>
     </header>
 
     <div class="delivery-info">
-        <img class="pin" src="pin.svg" alt="pin">
+        <img class="pin" src="pin.svg" alt="pin" />
         <div class="deliver-text">
             <p>Deliver to</p>
             <p class="location">2 passage Marie Antoinette, Antibes</p>
         </div>
         @if (idGroupOrder=== ''){
-        <img class="arrow-down" src="arrow_down.svg" alt="arrow">
-    }
-
-
+        <img class="arrow-down" src="arrow_down.svg" alt="arrow" />
+        }
     </div>
     <div class="group-order-settings">
         <p class="notif-group-order" #notifGroupOrder></p>
         <div class="join-group-order">
             <div class="group-order-input">
-                <img src="group.svg" alt="group">
+                <img src="group.svg" alt="group" />
                 <input [disabled]="idGroupOrder !== ''" #inputGroupId type="text" placeholder="010203"
                     class="group-code" />
                 @if (idGroupOrder!== '') {
-                <img id="validateGroupOrderId" src="check.svg" alt="check">
+                <img id="validateGroupOrderId" src="check.svg" alt="check" />
                 }
             </div>
             @if (idGroupOrder === '' ) {
             <button class="buttonGroupOrder" (click)="joinGroupOrder()">
                 <img id="joinGroupOrderId" src="login.svg" alt="login" />
-                Join group order</button>
-            }
-            @else {
+                Join group order
+            </button>
+            } @else {
             <button class="buttonGroupOrder" (click)="deleteGroupOrder()">
                 <img id="deleteGroupOrderId" src="logout.svg" alt="logout" />
                 Exit group order
@@ -43,43 +41,49 @@
         </div>
         @if (idGroupOrder === '' ) {
         <p>OR</p>
-        <div class="create-group-order">
-            <button class="buttonGroupOrder" (click)="createGroupOrder()">
-                <img id="createGroupOrderId" src="create.svg" alt="create" />
-                Create group order
-            </button>
+        <div class="bottom-button-choices">
+            <div class="create-group-order">
+                <button class="buttonGroupOrder" (click)="createGroupOrder()">
+                    <img id="createGroupOrderId" src="create.svg" alt="create" />
+                    Create group order
+                </button>
+            </div>
+            <div class="create-group-order">
+                <button class="buttonGroupOrder" (click)="createGroupOrder()">
+                    <img id="createGroupOrderId" src="solo.svg" alt="create" />
+                    Create individual order
+                </button>
+            </div>
         </div>
         }
-
     </div>
-
-
-    <div class="search-bar">
-        <input type="text" placeholder="Search for restaurants " />
-        <button class="search-btn"><img src="search.svg" alt="search"></button>
-    </div>
-    <div class="toggle-container">
-        <div class="toggle">
-            <input type="checkbox" class="checkbox" id="checkbox" [(ngModel)]="isToggled" (change)="onToggleChange()">
-            <label class="switch" for="checkbox">
-                <span class="slider"></span>
-            </label>
+    <div class="container-search" [ngClass]="{ disabled: idGroupOrder != '' ? '' : 'disabled' }">
+        <div class="search-bar">
+            <input type="text" placeholder="Search for restaurants " />
+            <button class="search-btn"><img src="search.svg" alt="search" /></button>
         </div>
-        <span class="toggle-text">Open now</span>
-    </div>
-
-
-
-    <div class="filters">
-        <div class="categories">
-            @for(category of categories; track $index){
-            <button class="category" [class.active]="selectedCategory === category.name"
-                (click)="selectCategory(category.name)">
-                <!--<img src="{{category.icon}}" [alt]="category.name + ' icon'" class="category-icon">-->
-                <span>{{ category.name }}</span>
-            </button>
-            }
+        <div class="toggle-container">
+            <div class="toggle">
+                <input type="checkbox" class="checkbox" id="checkbox" [(ngModel)]="isToggled"
+                    (change)="onToggleChange()" />
+                <label class="switch" for="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <span class="toggle-text">Open now</span>
         </div>
+
+        <div class="filters">
+            <div class="categories">
+                @for(category of categories; track $index){
+                <button class="category" [class.active]="selectedCategory === category.name"
+                    (click)="selectCategory(category.name)">
+                    <!--<img src="{{category.icon}}" [alt]="category.name + ' icon'" class="category-icon">-->
+                    <span>{{ category.name }}</span>
+                </button>
+                }
+            </div>
+        </div>
+        <app-restaurant-list [groupOrderId]="this.idGroupOrder"></app-restaurant-list>
     </div>
-    <app-restaurant-list></app-restaurant-list>
 </div>

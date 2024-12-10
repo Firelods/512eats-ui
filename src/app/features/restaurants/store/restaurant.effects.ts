@@ -2,14 +2,21 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, concatMap } from 'rxjs/operators';
 import { Observable, EMPTY, of } from 'rxjs';
-import { RestaurantActions } from './restaurant.actions';
+import { DishActions, RestaurantActions } from './restaurant.actions';
 import { RestaurantService } from '../services/restaurant.service';
+import { Dish } from './dish.model';
+import { OrderService } from '../../../core/services/order.service';
 
 @Injectable()
 export class RestaurantEffects {
     loadRestaurants$: Observable<any> = of(null);
+    loadAvailableDishes$: Observable<any> = of(null);
 
-    constructor(private actions$: Actions, private restaurantService: RestaurantService) {
+    constructor(
+        private actions$: Actions,
+        private restaurantService: RestaurantService,
+        private orderService: OrderService
+    ) {
         this.loadRestaurants$ = createEffect(() => {
             return this.actions$.pipe(
                 ofType(RestaurantActions.loadRestaurants),
@@ -23,6 +30,65 @@ export class RestaurantEffects {
                         )
                     )
                 )
+            );
+        });
+
+        this.loadAvailableDishes$ = createEffect(() => {
+            return this.actions$.pipe(
+                ofType(DishActions.loadAvailableDishes),
+                concatMap((action) => {
+                    if (action.restaurantId && !action.orderId) {
+                        console.log('action.restaurantId', action.restaurantId);
+
+                        return this.restaurantService
+                            .getAllDishesFromRestaurant(action.restaurantId)
+                            .pipe(
+                                map((dishes) =>
+                                    DishActions.loadAvailableDishesSuccess({
+                                        dishes,
+                                        restaurantId: action.restaurantId!,
+                                    })
+                                ),
+                                catchError((error) => {
+                                    console.error('Error fetching available dishes:', error);
+                                    this.orderService.openSnackBar(
+                                        'Error fetching available dishes',
+                                        'Close'
+                                    );
+                                    return of(DishActions.loadAvailableDishesFailure({ error }));
+                                })
+                            );
+                    } else {
+                        console.log('action.orderId', action.orderId);
+
+                        if (action.orderId == undefined || action.restaurantId == undefined) {
+                            console.log('No orderId or restaurantId provided, returning EMPTY');
+                            console.log('action:', action);
+
+                            return EMPTY;
+                        }
+                        localStorage.setItem('orderId', action.orderId.toString());
+                        console.log('Fetching available dishes for orderId:', action.orderId);
+                        return this.restaurantService.getAvailableDishes(action.orderId).pipe(
+                            map((dishes) => {
+                                console.log('Fetched dishes:', dishes);
+                                return DishActions.loadAvailableDishesSuccess({
+                                    dishes: dishes,
+                                    restaurantId: action.restaurantId!,
+                                    orderId: action.orderId!,
+                                });
+                            }),
+                            catchError((error) => {
+                                console.error('Error fetching available dishes:', error);
+                                this.orderService.openSnackBar(
+                                    'Error fetching available dishes',
+                                    'Close'
+                                );
+                                return of(DishActions.loadAvailableDishesFailure({ error }));
+                            })
+                        );
+                    }
+                })
             );
         });
     }

@@ -1,5 +1,9 @@
-import { Component, ElementRef, ViewChild, viewChild } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { OrderService } from '../../services/order.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DeliveryTimeModalComponent } from '../../../shared/delivery-time-modal/delivery-time-modal.component';
 
 @Component({
     selector: 'app-home',
@@ -7,7 +11,6 @@ import { Router } from '@angular/router';
     styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-    constructor(private router: Router) {}
     searchQuery: string = '';
     isOpenNow: boolean = true;
     categories: { name: string; icon: string }[] = [
@@ -20,7 +23,19 @@ export class HomeComponent {
     isToggled: boolean = false;
     idGroupOrder: string = '';
     @ViewChild('inputGroupId') inputGroupOrder!: ElementRef;
-    @ViewChild('notifGroupOrder') notifGroupOrder!: ElementRef;
+    private _snackBar = inject(MatSnackBar);
+    actualOrderId: number = -1;
+
+    constructor(
+        private router: Router,
+        private orderService: OrderService,
+        private dialog: MatDialog
+    ) {
+        this.orderService.actualOrderId.subscribe((orderId) => {
+            this.actualOrderId = orderId;
+            console.log('Actual order id:', orderId);
+        });
+    }
 
     selectCategory(category: string): void {
         this.selectedCategory = category;
@@ -42,12 +57,7 @@ export class HomeComponent {
             return;
         }
         this.idGroupOrder = this.inputGroupOrder.nativeElement.value;
-        this.notifGroupOrder.nativeElement.style.display = 'block';
-        this.notifGroupOrder.nativeElement.innerText =
-            'Vous avez bien rejoint la group order #' + this.idGroupOrder;
-        setTimeout(() => {
-            this.notifGroupOrder.nativeElement.style.display = 'none';
-        }, 5000);
+        this.openSnackBar('Group order joined : ' + this.idGroupOrder, 'Close');
     }
 
     deleteGroupOrder() {
@@ -55,13 +65,36 @@ export class HomeComponent {
     }
 
     createGroupOrder() {
-        this.idGroupOrder = '512512'; // recuperer la groupid depuis le backend
-        this.inputGroupOrder.nativeElement.value = this.idGroupOrder;
-        this.notifGroupOrder.nativeElement.style.display = 'block';
-        this.notifGroupOrder.nativeElement.innerText =
-            'Vous avez bien créé et rejoint la group order #' + this.idGroupOrder;
-        setTimeout(() => {
-            this.notifGroupOrder.nativeElement.style.display = 'none';
-        }, 5000);
+        const dialogRef = this.dialog.open(DeliveryTimeModalComponent);
+
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log('Heure sélectionnée:', result);
+            this.orderService.createGroupOrder(0, result.time).subscribe({
+                next: (groupId) => {
+                    this.idGroupOrder = groupId.toString();
+                    // this.orderService.switchActualOrder(groupId);
+                    this.inputGroupOrder.nativeElement.value = this.idGroupOrder;
+                    this.openSnackBar(
+                        'Group order joined and created : ' + this.idGroupOrder,
+                        'Close'
+                    );
+                },
+                error: (err) => {
+                    console.error('Error creating group order:', err);
+                    this.openSnackBar('Failed to create group order. Please try again.', 'Close');
+                },
+            });
+        });
+    }
+
+    openSnackBar(message: string, action: string) {
+        this._snackBar.open(message, action, { duration: 2000 });
+    }
+
+    resetOrder() {
+        this.orderService.resetOrder();
+
+        this.idGroupOrder = '';
+        this.inputGroupOrder.nativeElement.value = '';
     }
 }

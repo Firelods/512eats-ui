@@ -1,11 +1,12 @@
 <div class="restaurant-list">
-    @for (restaurant of restaurants$ | async; track restaurant) {
-    <div class="restaurant-card">
+    @for (restaurant of restaurants$ | async; track restaurant.id) {
+    <div class="restaurant-card" (click)="navigateToRestaurant(restaurant.id)">
         <div class="restaurant-header">
             <h2>{{ restaurant.name }}</h2>
             <p>
-                @for (item of [].constructor(restaurant.averagePrice); track $index) {$}
-                • {{ restaurant.foodTypeList.join(', ') }}</p>
+                @for (item of [].constructor(restaurant.averagePrice); track $index) {$} •
+                {{ restaurant.foodTypeList.join(", ") }}
+            </p>
         </div>
         <div class="restaurant-images">
             @for (image of restaurant.dishPictureURLListSample; track image) {

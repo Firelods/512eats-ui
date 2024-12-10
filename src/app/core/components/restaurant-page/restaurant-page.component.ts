@@ -1,6 +1,17 @@
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { Restaurant } from '../../../features/restaurants/store/restaurant.model';
+import { Store } from '@ngrx/store';
+import { filter, map, Observable } from 'rxjs';
+import { selectAll } from '../../../features/restaurants/store/restaurant.reducer';
+import { ActivatedRoute } from '@angular/router';
+import {
+    DishActions,
+    RestaurantActions,
+} from '../../../features/restaurants/store/restaurant.actions';
+import { SubOrder } from '../../../features/restaurants/store/suborder.model';
+import { OrderService } from '../../services/order.service';
+import { Dish } from '../../../features/restaurants/store/dish.model';
 
 @Component({
     selector: 'app-restaurant-page',
@@ -8,56 +19,62 @@ import { Restaurant } from '../../../features/restaurants/store/restaurant.model
     styleUrl: './restaurant-page.component.scss',
 })
 export class RestaurantPageComponent {
-    restaurant:Restaurant = {
-        id: 1,
-        name: 'La Bella Italia',
-        openTime: '11:00',
-        closeTime: '22:00',
-        foodTypeList: ['Italian'],
-        averagePrice: 2,
-        description: 'Delicious Italian cuisine with a modern twist.',
-        dishPictureURLListSample: ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWwNz-YV88e3LFP6iisBcZT-loky1VotV4aQ&s', 'https://assets.afcdn.com/recipe/20211214/125831_w1024h1024c1cx866cy866cxt0cyt292cxb1732cyb1732.jpg'],
+    $restaurant: Observable<Restaurant>;
+    subOrder: SubOrder | undefined;
+
+    constructor(
+        private router: Router,
+        private store: Store,
+        private route: ActivatedRoute,
+        private orderService: OrderService
+    ) {
+        const idParam = this.route.snapshot.paramMap.get('id');
+        if (idParam === null) {
+            this.router.navigate(['/']);
+            throw new Error('Restaurant ID is missing in the route parameters');
+        }
+        const id = parseInt(idParam);
+        this.$restaurant = this.store.select(selectAll).pipe(
+            map((restaurants) => restaurants.find((restaurant) => restaurant.id === id)),
+            filter((restaurant): restaurant is Restaurant => restaurant !== undefined)
+        );
+        let orderId = localStorage.getItem('orderId');
+        if (orderId !== null) {
+            this.store.dispatch(RestaurantActions.loadRestaurants());
+            this.store.dispatch(
+                DishActions.loadAvailableDishes({ orderId: parseInt(orderId), restaurantId: id })
+            );
+            console.log('Loading dishes for order', orderId);
+
+            this.orderService.loadSubOrder(parseInt(orderId));
+        }
+        this.orderService.subOrder.subscribe((subOrder) => {
+            this.subOrder = subOrder;
+            console.log('SubOrder:', subOrder);
+        });
     }
-    dishes = [
-        {
-            quantity : 0,
-            name: 'Margherita Pizza',
-            description: 'Classic pizza with tomato sauce, mozzarella, and basil.',
-            price: '$9',
-            time: '5 min',
-            image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWwNz-YV88e3LFP6iisBcZT-loky1VotV4aQ&s',
-        },
-        {
-            quantity : 0,
-            name: 'Spaghetti Carbonara',
-            description: 'Traditional pasta with eggs, cheese, pancetta, and pepper.',
-            price: '$12',
-            time: '7 min',
-            image: 'https://assets.afcdn.com/recipe/20211214/125831_w1024h1024c1cx866cy866cxt0cyt292cxb1732cyb1732.jpg',
-        },
-        // Ajouter plus de plats ici
-    ];
 
-    constructor(private router:Router) {}
+    getDishQuantity(dishId: number): number {
+        if (!this.subOrder || !this.subOrder.dishes) {
+            return 0;
+        }
+        const matchingDish = this.subOrder.dishes.find((dish) => dish.id === dishId);
+        return matchingDish ? matchingDish.quantity || 0 : 0;
+    }
 
-    goToHomePage(){
+    goToHomePage() {
         this.router.navigate(['/']);
     }
 
-    goToCartPage(){
+    goToCartPage() {
         this.router.navigate(['/cart']);
     }
 
-    increaseQuantity(item: any) {
-        item.quantity++;
+    increaseQuantity(item: Dish) {
+        this.orderService.addDishToSubOrder(item.id);
     }
 
-    decreaseQuantity(item: any) {
-        if (item.quantity > 0) {
-            item.quantity--;
-        }
+    decreaseQuantity(item: Dish) {
+        this.orderService.removeDishFromSubOrder(item.id);
     }
-
 }
-
-

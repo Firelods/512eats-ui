@@ -2,6 +2,7 @@ import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 
 import { Restaurant } from './restaurant.model';
+import { Dish } from './dish.model';
 
 export const RestaurantActions = createActionGroup({
     source: 'Restaurant/API',
@@ -18,5 +19,18 @@ export const RestaurantActions = createActionGroup({
         'Delete Restaurant': props<{ id: string }>(),
         'Delete Restaurants': props<{ ids: string[] }>(),
         'Clear Restaurants': emptyProps(),
+    },
+});
+
+export const DishActions = createActionGroup({
+    source: 'Dish/API',
+    events: {
+        'Load Available Dishes': props<{ restaurantId?: number; orderId?: number }>(),
+        'Load Available Dishes Success': props<{
+            dishes: Dish[];
+            restaurantId: number;
+            orderId?: number;
+        }>(),
+        'Load Available Dishes Failure': props<{ error: any }>(),
     },
 });

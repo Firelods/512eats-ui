@@ -1,4 +1,16 @@
+@use '@angular/material' as mat;
+@include mat.core();
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+
+$my-theme: mat.define-theme((color: (theme-type: light,
+                primary: mat.$red-palette,
+            ),
+        ));
+
+html {
+    color-scheme: light dark;
+    @include mat.all-component-themes($my-theme);
+}
 
 * {
     margin: 0;
@@ -7,4 +19,14 @@
     font-family: "Outfit", sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
+}
+
+.container {
+    font-family: "Outfit", sans-serif;
+    max-width: 400px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
 }

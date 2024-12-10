@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Sélectionnez une heure de livraison</h2>
+<mat-dialog-content>
+    <mat-form-field appearance="fill">
+        <mat-label>Heure de livraison</mat-label>
+        <input
+            matInput
+            [matDatepicker]="picker"
+            placeholder="Choisissez une date"
+            [(ngModel)]="deliveryDate"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Heure</mat-label>
+        <input matInput type="time" [(ngModel)]="deliveryTime" />
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="onCancel()">Annuler</button>
+    <button mat-button color="primary" (click)="onConfirm()">Confirmer</button>
+</mat-dialog-actions>

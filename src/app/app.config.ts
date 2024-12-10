@@ -1,10 +1,17 @@
-import { ApplicationConfig, provideZoneChangeDetection, isDevMode } from '@angular/core';
+import {
+    ApplicationConfig,
+    provideZoneChangeDetection,
+    isDevMode,
+    importProvidersFrom,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -17,5 +24,7 @@ export const appConfig: ApplicationConfig = {
             traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
             connectInZone: true, // If set to true, the connection is established within the Angular zone
         }),
+        importProvidersFrom(MatDatepickerModule),
+        importProvidersFrom(MatNativeDateModule),
     ],
 };
