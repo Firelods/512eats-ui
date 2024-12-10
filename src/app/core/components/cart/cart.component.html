@@ -7,14 +7,15 @@
     </div>
 
     <div class="cart-container">
-        @for (item of cartItems; track item) {
+        @if (subOrder) {
+        @for (item of subOrder.dishes; track item) {
         <div class="cart-item">
-            <img [src]="item.image" alt="{{ item.name }}" class="item-image" />
+            <img [src]="item.pictureURL" alt="{{ item.name }}" class="item-image" />
             <div class="item-details">
                 <h3 class="item-name">{{ item.name }}</h3>
                 <div class="item-actions">
                     @if (item.quantity === 1) {
-                    <button class="remove-btn" (click)="removeItem(item)">
+                    <button class="remove-btn" (click)="decreaseQuantity(item)">
                         <img src="delete.svg" alt="Remove" />
                     </button>
                     } @if (item.quantity > 1) {
@@ -33,5 +34,7 @@
             <h2>${{ calculateTotal() }}</h2>
             <button class="pay-btn" (click)="payOrder()">Pay Order</button>
         </div>
+        }
     </div>
+
 </div>
