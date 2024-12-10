@@ -44,6 +44,8 @@ export class RestaurantPageComponent {
             this.store.dispatch(
                 DishActions.loadAvailableDishes({ orderId: parseInt(orderId), restaurantId: id })
             );
+            console.log('Loading dishes for order', orderId);
+
             this.orderService.loadSubOrder(parseInt(orderId));
         }
         this.orderService.subOrder.subscribe((subOrder) => {

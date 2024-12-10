@@ -10,6 +10,7 @@ export interface SubOrder {
     placedDate: string | null;
     deliveryDateTime: string | null;
     payment: any | null;
+    groupOrderId?: number;
 }
 
 export interface DishWithQuantity extends Dish {

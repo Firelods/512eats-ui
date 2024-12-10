@@ -5,13 +5,18 @@ import { Observable, EMPTY, of } from 'rxjs';
 import { DishActions, RestaurantActions } from './restaurant.actions';
 import { RestaurantService } from '../services/restaurant.service';
 import { Dish } from './dish.model';
+import { OrderService } from '../../../core/services/order.service';
 
 @Injectable()
 export class RestaurantEffects {
     loadRestaurants$: Observable<any> = of(null);
     loadAvailableDishes$: Observable<any> = of(null);
 
-    constructor(private actions$: Actions, private restaurantService: RestaurantService) {
+    constructor(
+        private actions$: Actions,
+        private restaurantService: RestaurantService,
+        private orderService: OrderService
+    ) {
         this.loadRestaurants$ = createEffect(() => {
             return this.actions$.pipe(
                 ofType(RestaurantActions.loadRestaurants),
@@ -44,9 +49,14 @@ export class RestaurantEffects {
                                         restaurantId: action.restaurantId!,
                                     })
                                 ),
-                                catchError((error) =>
-                                    of(DishActions.loadAvailableDishesFailure({ error }))
-                                )
+                                catchError((error) => {
+                                    console.error('Error fetching available dishes:', error);
+                                    this.orderService.openSnackBar(
+                                        'Error fetching available dishes',
+                                        'Close'
+                                    );
+                                    return of(DishActions.loadAvailableDishesFailure({ error }));
+                                })
                             );
                     } else {
                         console.log('action.orderId', action.orderId);
@@ -70,6 +80,10 @@ export class RestaurantEffects {
                             }),
                             catchError((error) => {
                                 console.error('Error fetching available dishes:', error);
+                                this.orderService.openSnackBar(
+                                    'Error fetching available dishes',
+                                    'Close'
+                                );
                                 return of(DishActions.loadAvailableDishesFailure({ error }));
                             })
                         );

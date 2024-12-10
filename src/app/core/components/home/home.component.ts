@@ -33,6 +33,7 @@ export class HomeComponent {
     ) {
         this.orderService.actualOrderId.subscribe((orderId) => {
             this.actualOrderId = orderId;
+            console.log('Actual order id:', orderId);
         });
     }
 
@@ -71,7 +72,7 @@ export class HomeComponent {
             this.orderService.createGroupOrder(0, result.time).subscribe({
                 next: (groupId) => {
                     this.idGroupOrder = groupId.toString();
-                    this.orderService.switchActualOrder(groupId);
+                    // this.orderService.switchActualOrder(groupId);
                     this.inputGroupOrder.nativeElement.value = this.idGroupOrder;
                     this.openSnackBar(
                         'Group order joined and created : ' + this.idGroupOrder,
@@ -88,5 +89,12 @@ export class HomeComponent {
 
     openSnackBar(message: string, action: string) {
         this._snackBar.open(message, action, { duration: 2000 });
+    }
+
+    resetOrder() {
+        this.orderService.resetOrder();
+
+        this.idGroupOrder = '';
+        this.inputGroupOrder.nativeElement.value = '';
     }
 }

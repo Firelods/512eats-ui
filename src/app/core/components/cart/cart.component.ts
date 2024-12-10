@@ -38,7 +38,35 @@ export class CartComponent {
     }
 
     payOrder() {
-        alert('Order placed successfully!');
+        this.orderService.paySubOrder().subscribe({
+            next: () => {
+                this.orderService.openSnackBar('Order paid successfully');
+                if (this.subOrder) {
+                    this.orderService.loadSubOrder(this.subOrder.id);
+                }
+            },
+            error: (error) => {
+                console.error('Error paying order:', error);
+                this.orderService.openSnackBar('Error paying order', 'Close');
+            },
+        });
+    }
+
+    closeGroupOrder() {
+        this.orderService.placeGroupOrder()?.subscribe({
+            next: (response) => {
+                this.orderService.openSnackBar('Group order placed successfully');
+                if (!this.subOrder) {
+                    return;
+                }
+                this.orderService.loadSubOrder(this.subOrder.id);
+                // this.router.navigate(['/group-order', orderId]);
+            },
+            error: (error) => {
+                console.error('Error placing group order:', error);
+                this.orderService.openSnackBar('Error placing group order', 'Close');
+            },
+        });
     }
 
     goToRestaurants() {

@@ -1,6 +1,6 @@
 <div class="container">
     <header class="header">
-        <h3>512 Eats</h3>
+        <h3 (click)="resetOrder()">512 Eats</h3>
         <div class="basket">
             <img src="basket.svg" alt="basket" (click)="goToCartPage()" />
         </div>
@@ -21,13 +21,8 @@
         <div class="join-group-order">
             <div class="group-order-input">
                 <img src="group.svg" alt="group" />
-                <input
-                    [disabled]="idGroupOrder !== ''"
-                    #inputGroupId
-                    type="text"
-                    placeholder="010203"
-                    class="group-code"
-                />
+                <input [disabled]="idGroupOrder !== ''" #inputGroupId type="text" placeholder="010203"
+                    class="group-code" />
                 @if (idGroupOrder!== '') {
                 <img id="validateGroupOrderId" src="check.svg" alt="check" />
                 }
@@ -62,20 +57,15 @@
         </div>
         }
     </div>
-    <div class="container-search" [ngClass]="{ disabled: actualOrderId != -1 ? '' : 'disabled' }">
+    <div class="container-search" [ngClass]="{ disabled: idGroupOrder != '' ? '' : 'disabled' }">
         <div class="search-bar">
             <input type="text" placeholder="Search for restaurants " />
             <button class="search-btn"><img src="search.svg" alt="search" /></button>
         </div>
         <div class="toggle-container">
             <div class="toggle">
-                <input
-                    type="checkbox"
-                    class="checkbox"
-                    id="checkbox"
-                    [(ngModel)]="isToggled"
-                    (change)="onToggleChange()"
-                />
+                <input type="checkbox" class="checkbox" id="checkbox" [(ngModel)]="isToggled"
+                    (change)="onToggleChange()" />
                 <label class="switch" for="checkbox">
                     <span class="slider"></span>
                 </label>
@@ -86,11 +76,8 @@
         <div class="filters">
             <div class="categories">
                 @for(category of categories; track $index){
-                <button
-                    class="category"
-                    [class.active]="selectedCategory === category.name"
-                    (click)="selectCategory(category.name)"
-                >
+                <button class="category" [class.active]="selectedCategory === category.name"
+                    (click)="selectCategory(category.name)">
                     <!--<img src="{{category.icon}}" [alt]="category.name + ' icon'" class="category-icon">-->
                     <span>{{ category.name }}</span>
                 </button>
