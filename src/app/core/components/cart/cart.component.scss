@@ -132,3 +132,24 @@
     border-radius: 4px;
     cursor: pointer;
 }
+
+.empty-cart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.empty-cart-image {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+.empty-cart-text {
+    font-size: 18px;
+    color: #333;
+}

@@ -7,7 +7,7 @@
     </div>
 
     <div class="cart-container">
-        @if (subOrder) {
+        @if (subOrder && subOrder.dishes.length !== 0) {
         @for (item of subOrder.dishes; track item.id) {
         <div class="cart-item">
             <img [src]="item.pictureURL" alt="{{ item.name }}" class="item-image" />
@@ -29,6 +29,7 @@
         </div>
         }
 
+
         <div class="cart-summary">
             <h4>Total</h4>
             <h2>${{ calculateTotal() }}</h2>
@@ -43,6 +44,13 @@
             <button class="pay-btn" (click)="payOrder()">Pay Order</button>
             }
         </div>
+        }
+        
+        @else {
+            <div class="empty-cart">
+                <img src="sad_face.svg" alt="Empty Cart" class="empty-cart-image" />
+                <h3 class="empty-cart-text">Actuellement, il n'y aucun plat dans le panier. Choisissez vos plats dans un des restaurants pour les voir apparaitre juste ici ! </h3>
+            </div>
         }
     </div>
 
