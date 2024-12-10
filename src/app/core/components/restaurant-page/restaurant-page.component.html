@@ -30,7 +30,7 @@
                     <h3 class="dish-name">{{ dish.name }}</h3>
                     <p class="dish-description">{{ dish.description }}</p>
                     <p class="dish-price">{{ dish.price }}€ · {{ dish.preparationTime }}min</p>
-                    @if (subOrder) {
+                    @if (subOrder && subOrder.status != "PLACED" && subOrder.status != "PAID") {
                     @if (getDishQuantity(dish.id) === 0) {
                     <button class="add-btn" (click)="increaseQuantity(dish)">
                         <img src="basket.svg" alt="basket" class="basket" />
