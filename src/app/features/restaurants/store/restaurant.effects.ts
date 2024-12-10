@@ -72,6 +72,9 @@ export class RestaurantEffects {
                         return this.restaurantService.getAvailableDishes(action.orderId).pipe(
                             map((dishes) => {
                                 console.log('Fetched dishes:', dishes);
+                                dishes = dishes.sort((a: Dish, b: Dish) =>
+                                    a.disabled === b.disabled ? 0 : a.disabled ? 1 : -1
+                                );
                                 return DishActions.loadAvailableDishesSuccess({
                                     dishes: dishes,
                                     restaurantId: action.restaurantId!,

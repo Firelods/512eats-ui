@@ -25,7 +25,10 @@
                     <span class="quantity">{{ item.quantity }}</span>
                     <button class="quantity-btn" (click)="increaseQuantity(item)">+</button>
                 </div>
-            }
+                }
+                @else {
+                <p class="item-quantity">Quantity: {{ item.quantity }}</p>
+                }
             </div>
             <p class="item-price">${{ item.price }}</p>
         </div>
@@ -47,12 +50,13 @@
             }
         </div>
         }
-        
+
         @else {
-            <div class="empty-cart">
-                <img src="sad_face.svg" alt="Empty Cart" class="empty-cart-image" />
-                <h3 class="empty-cart-text">Actuellement, il n'y aucun plat dans le panier. Choisissez vos plats dans un des restaurants pour les voir apparaitre juste ici ! </h3>
-            </div>
+        <div class="empty-cart">
+            <img src="sad_face.svg" alt="Empty Cart" class="empty-cart-image" />
+            <h3 class="empty-cart-text">Actuellement, il n'y aucun plat dans le panier. Choisissez vos plats dans un des
+                restaurants pour les voir apparaitre juste ici ! </h3>
+        </div>
         }
     </div>
 

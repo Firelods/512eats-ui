@@ -28,7 +28,7 @@
         <div class="menu">
             <h2>Menu</h2>
             @for(dish of restaurant.dishes; track $index){
-            <div class="menu-dish">
+            <div class="menu-dish" [ngClass]="{'disabled': dish.disabled}">
                 <div class="menu-info">
                     <h3 class="dish-name">{{ dish.name }}</h3>
                     <p class="dish-description">{{ dish.description }}</p>

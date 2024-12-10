@@ -181,9 +181,27 @@ export class OrderService {
 
     removeDishFromSubOrder(dishId: number): void {
         this.http
-            .delete(`${environment.apiUrl}/orders/remove-dish?order-id=${this.actualOrderId.value}&dish-id=${dishId}`)
-            .subscribe(() => {
-                this.loadSubOrder(this.actualOrderId.value);
+            .delete(
+                `${environment.apiUrl}/orders/remove-dish?order-id=${this.actualOrderId.value}&dish-id=${dishId}`
+            )
+            .subscribe({
+                next: () => {
+                    this.store.dispatch(
+                        DishActions.loadAvailableDishes({
+                            restaurantId: this.subOrder.value.restaurantId,
+                            orderId: this.subOrder.value.id,
+                        })
+                    );
+
+                    this.loadSubOrder(this.subOrder.value.id);
+                },
+                error: (err) => {
+                    console.error(err);
+                    this.openSnackBar(
+                        'Failed to remove dish from sub-order. Please try again.',
+                        'Close'
+                    );
+                },
             });
     }
 
