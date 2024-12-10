@@ -13,6 +13,7 @@
             <img [src]="item.pictureURL" alt="{{ item.name }}" class="item-image" />
             <div class="item-details">
                 <h3 class="item-name">{{ item.name }}</h3>
+                @if (subOrder.status != "PLACED" && subOrder.status != "PAID") {
                 <div class="item-actions">
                     @if (item.quantity === 1) {
                     <button class="remove-btn" (click)="decreaseQuantity(item)">
@@ -24,6 +25,7 @@
                     <span class="quantity">{{ item.quantity }}</span>
                     <button class="quantity-btn" (click)="increaseQuantity(item)">+</button>
                 </div>
+            }
             </div>
             <p class="item-price">${{ item.price }}</p>
         </div>

@@ -70,6 +70,6 @@ export class CartComponent {
     }
 
     goToRestaurants() {
-        this.router.navigate(['/restaurant']);
+        this.router.navigate(['/restaurant/'+this.subOrder?.restaurantId]);
     }
 }

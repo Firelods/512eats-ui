@@ -181,10 +181,7 @@ export class OrderService {
 
     removeDishFromSubOrder(dishId: number): void {
         this.http
-            .post(`${environment.apiUrl}/orders/remove-dish`, {
-                orderId: this.actualOrderId.value,
-                dishId,
-            })
+            .delete(`${environment.apiUrl}/orders/remove-dish?order-id=${this.actualOrderId.value}&dish-id=${dishId}`)
             .subscribe(() => {
                 this.loadSubOrder(this.actualOrderId.value);
             });
