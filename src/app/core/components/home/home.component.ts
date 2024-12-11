@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { OrderService } from '../../services/order.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DeliveryTimeModalComponent } from '../../../shared/delivery-time-modal/delivery-time-modal.component';
+import { GroupOrder } from '../../../features/restaurants/store/grouporder.model';
 
 @Component({
     selector: 'app-home',
@@ -25,7 +26,7 @@ export class HomeComponent {
     @ViewChild('inputGroupId') inputGroupOrder!: ElementRef;
     private _snackBar = inject(MatSnackBar);
     actualOrderId: number = -1;
-
+    actualGroupOrder: GroupOrder | undefined;
     constructor(
         private router: Router,
         private orderService: OrderService,
@@ -34,6 +35,9 @@ export class HomeComponent {
         this.orderService.actualOrderId.subscribe((orderId) => {
             this.actualOrderId = orderId;
             console.log('Actual order id:', orderId);
+        });
+        this.orderService.groupOrder.subscribe((groupOrder) => {
+            this.actualGroupOrder = groupOrder;
         });
     }
 
@@ -74,6 +78,7 @@ export class HomeComponent {
                     this.idGroupOrder = groupId.toString();
                     // this.orderService.switchActualOrder(groupId);
                     this.inputGroupOrder.nativeElement.value = this.idGroupOrder;
+                    this.orderService.loadGroupOrder();
                     this.openSnackBar(
                         'Group order joined and created : ' + this.idGroupOrder,
                         'Close'
@@ -97,4 +102,5 @@ export class HomeComponent {
         this.idGroupOrder = '';
         this.inputGroupOrder.nativeElement.value = '';
     }
+
 }

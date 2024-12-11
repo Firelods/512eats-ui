@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { DishActions } from '../../features/restaurants/store/restaurant.actions';
 import { DishWithQuantity, SubOrder } from '../../features/restaurants/store/suborder.model';
 import { Dish } from '../../features/restaurants/store/dish.model';
+import { GroupOrder } from '../../features/restaurants/store/grouporder.model';
 
 @Injectable({
     providedIn: 'root',
@@ -24,6 +25,18 @@ export class OrderService {
         placedDate: null,
         price: 0,
         payment: null,
+    });
+    groupOrder: BehaviorSubject<GroupOrder> = new BehaviorSubject<GroupOrder>({
+        id: -1,
+        status: 'CREATED',
+        deliveryDateTime: null,
+        suborders: [],
+        deliveryLocation: {
+            id: -1,
+            address: 'Test',
+            city: 'Antibes',
+            streetNumber: '2',
+        },
     });
 
     constructor(private http: HttpClient, private snackBar: MatSnackBar, private store: Store) {
@@ -116,6 +129,12 @@ export class OrderService {
         );
     }
 
+    getGroupOrder(): Observable<GroupOrder> {
+        return this.http.get<GroupOrder>(
+            `${environment.apiUrl}/group-orders/get/${this.subOrder.value.groupOrderId}`
+        );
+    }
+
     loadSubOrder(orderId: number) {
         this.getSubOrder(orderId).subscribe({
             next: (response) => {
@@ -133,6 +152,21 @@ export class OrderService {
             },
         });
     }
+
+    loadGroupOrder() {
+        this.getGroupOrder().subscribe({
+            next: (response) => {
+                console.log('GroupOrder:', response);
+
+                this.groupOrder.next(response);
+            },
+            error: (err) => {
+                console.error(err);
+                this.openSnackBar('Failed to load sub-order. Please try again.', 'Close');
+            },
+        });
+    }
+
     groupDishesWithQuantity(dishes: Dish[]): DishWithQuantity[] {
         const dishMap: { [id: number]: DishWithQuantity } = {};
 

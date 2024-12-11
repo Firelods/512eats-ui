@@ -10,7 +10,7 @@
         <img class="pin" src="pin.svg" alt="pin" />
         <div class="deliver-text">
             <p>Deliver to</p>
-            <p class="location">2 passage Marie Antoinette, Antibes</p>
+            <p class="location">{{actualGroupOrder?.deliveryLocation?.address}}</p>
         </div>
         @if (idGroupOrder=== ''){
         <img class="arrow-down" src="arrow_down.svg" alt="arrow" />
