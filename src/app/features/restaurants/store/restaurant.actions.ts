@@ -19,6 +19,11 @@ export const RestaurantActions = createActionGroup({
         'Delete Restaurant': props<{ id: string }>(),
         'Delete Restaurants': props<{ ids: string[] }>(),
         'Clear Restaurants': emptyProps(),
+        'Filter Restaurants': props<{
+            criteria: { name?: string; availability?: boolean; foodTypes?: string[] };
+        }>(),
+        'Filter Restaurants Success': props<{ restaurants: Restaurant[] }>(),
+        'Filter Restaurants Failure': props<{ error: any }>(),
     },
 });
 

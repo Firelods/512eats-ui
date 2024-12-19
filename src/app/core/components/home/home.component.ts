@@ -5,6 +5,9 @@ import { OrderService } from '../../services/order.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DeliveryTimeModalComponent } from '../../../shared/delivery-time-modal/delivery-time-modal.component';
 import { GroupOrder } from '../../../features/restaurants/store/grouporder.model';
+import { Store } from '@ngrx/store';
+import { RestaurantActions } from '../../../features/restaurants/store/restaurant.actions';
+import { debounceTime, Subject } from 'rxjs';
 
 @Component({
     selector: 'app-home',
@@ -15,22 +18,24 @@ export class HomeComponent {
     searchQuery: string = '';
     isOpenNow: boolean = true;
     categories: { name: string; icon: string }[] = [
-        { name: 'Burgers', icon: 'burger-icon.svg' },
+        { name: 'Burger', icon: 'burger-icon.svg' },
         { name: 'Pizza', icon: 'pizza-icon.svg' },
         { name: 'Sushi', icon: 'sushi-icon.svg' },
-        { name: 'Salads', icon: 'salad-icon.svg' },
+        { name: 'Salad', icon: 'salad-icon.svg' },
     ];
-    selectedCategory: string = 'Burgers';
+    selectedCategories: string[] = [];
     isToggled: boolean = false;
     idGroupOrder: string = '';
     @ViewChild('inputGroupId') inputGroupOrder!: ElementRef;
     private _snackBar = inject(MatSnackBar);
     actualOrderId: number = -1;
+    private searchSubject = new Subject<string>();
     actualGroupOrder: GroupOrder | undefined;
     constructor(
         private router: Router,
         private orderService: OrderService,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private store: Store
     ) {
         this.orderService.actualOrderId.subscribe((orderId) => {
             this.actualOrderId = orderId;
@@ -42,11 +47,40 @@ export class HomeComponent {
     }
 
     selectCategory(category: string): void {
-        this.selectedCategory = category;
+        if (this.selectedCategories.includes(category)) {
+            this.selectedCategories = this.selectedCategories.filter((c) => c !== category);
+        } else {
+            this.selectedCategories = [...this.selectedCategories, category];
+        }
+        this.store.dispatch(
+            RestaurantActions.filterRestaurants({
+                criteria: { foodTypes: this.selectedCategories },
+            })
+        );
+    }
+
+    ngOnInit() {
+        this.searchSubject.pipe(debounceTime(300)).subscribe((searchQuery) => {
+            this.store.dispatch(
+                RestaurantActions.filterRestaurants({ criteria: { name: searchQuery } })
+            );
+        });
+    }
+
+    onSearchChange() {
+        console.log('Search query:', this.searchQuery);
+        this.searchSubject.next(this.searchQuery);
     }
 
     onToggleChange() {
         console.log('Toggle state:', this.isToggled);
+        if (this.isToggled) {
+            this.store.dispatch(
+                RestaurantActions.filterRestaurants({ criteria: { availability: this.isToggled } })
+            );
+        } else {
+            this.store.dispatch(RestaurantActions.loadRestaurants());
+        }
     }
 
     goToCartPage() {
@@ -61,6 +95,8 @@ export class HomeComponent {
             return;
         }
         this.idGroupOrder = this.inputGroupOrder.nativeElement.value;
+        this.orderService.actualGroupOrderId.next(parseInt(this.idGroupOrder));
+        this.orderService.loadGroupOrder();
         this.openSnackBar('Group order joined : ' + this.idGroupOrder, 'Close');
     }
 
@@ -78,6 +114,7 @@ export class HomeComponent {
                     this.idGroupOrder = groupId.toString();
                     // this.orderService.switchActualOrder(groupId);
                     this.inputGroupOrder.nativeElement.value = this.idGroupOrder;
+                    this.orderService.actualGroupOrderId.next(groupId);
                     this.orderService.loadGroupOrder();
                     this.openSnackBar(
                         'Group order joined and created : ' + this.idGroupOrder,
@@ -102,5 +139,4 @@ export class HomeComponent {
         this.idGroupOrder = '';
         this.inputGroupOrder.nativeElement.value = '';
     }
-
 }

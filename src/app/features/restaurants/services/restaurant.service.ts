@@ -23,4 +23,21 @@ export class RestaurantService {
     getAllDishesFromRestaurant(restaurantId: number): Observable<Dish[]> {
         return this.http.get<Dish[]>(`${environment.apiUrl}/dishes?restaurant-id=${restaurantId}`);
     }
+
+    getRestaurantByName(name: string): Observable<Restaurant[]> {
+        return this.http.get<Restaurant[]>(`${environment.apiUrl}/restaurants/by?name=${name}`);
+    }
+
+    getAvailableRestaurants(): Observable<Restaurant[]> {
+        return this.http.get<Restaurant[]>(
+            `${environment.apiUrl}/restaurants/by?availability=true`
+        );
+    }
+
+    getRestaurantByFoodTypes(foodTypes: string[]): Observable<Restaurant[]> {
+        foodTypes = foodTypes.map((type) => type.toUpperCase());
+        return this.http.get<Restaurant[]>(
+            `${environment.apiUrl}/restaurants/by?food-types=${foodTypes.join(',')}`
+        );
+    }
 }

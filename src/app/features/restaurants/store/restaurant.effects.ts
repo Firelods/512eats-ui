@@ -11,7 +11,7 @@ import { OrderService } from '../../../core/services/order.service';
 export class RestaurantEffects {
     loadRestaurants$: Observable<any> = of(null);
     loadAvailableDishes$: Observable<any> = of(null);
-
+    filterRestaurants$: Observable<any> = of(null);
     constructor(
         private actions$: Actions,
         private restaurantService: RestaurantService,
@@ -94,5 +94,88 @@ export class RestaurantEffects {
                 })
             );
         });
+
+        this.filterRestaurants$ = createEffect(() =>
+            this.actions$.pipe(
+                ofType(RestaurantActions.filterRestaurants),
+                concatMap((action) => {
+                    if (!action.criteria) {
+                        return EMPTY;
+                    }
+                    if (action.criteria.name) {
+                        return this.restaurantService
+                            .getRestaurantByName(action.criteria.name)
+                            .pipe(
+                                map((filteredRestaurants) =>
+                                    RestaurantActions.filterRestaurantsSuccess({
+                                        restaurants: filteredRestaurants,
+                                    })
+                                ),
+                                catchError((error) => {
+                                    console.error('Error fetching restaurants by name:', error);
+                                    if (error.status === 404) {
+                                        return of(
+                                            RestaurantActions.filterRestaurantsSuccess({
+                                                restaurants: [],
+                                            })
+                                        );
+                                    }
+                                    return of(
+                                        RestaurantActions.filterRestaurantsFailure({ error })
+                                    );
+                                })
+                            );
+                    }
+                    if (action.criteria.availability) {
+                        return this.restaurantService.getAvailableRestaurants().pipe(
+                            map((filteredRestaurants) =>
+                                RestaurantActions.filterRestaurantsSuccess({
+                                    restaurants: filteredRestaurants,
+                                })
+                            ),
+                            catchError((error) => {
+                                console.error('Error fetching restaurants by availability:', error);
+                                if (error.status === 404) {
+                                    return of(
+                                        RestaurantActions.filterRestaurantsSuccess({
+                                            restaurants: [],
+                                        })
+                                    );
+                                }
+                                return of(RestaurantActions.filterRestaurantsFailure({ error }));
+                            })
+                        );
+                    }
+                    if (action.criteria.foodTypes) {
+                        return this.restaurantService
+                            .getRestaurantByFoodTypes(action.criteria.foodTypes)
+                            .pipe(
+                                map((filteredRestaurants) =>
+                                    RestaurantActions.filterRestaurantsSuccess({
+                                        restaurants: filteredRestaurants,
+                                    })
+                                ),
+                                catchError((error) => {
+                                    console.error(
+                                        'Error fetching restaurants by food types:',
+                                        error
+                                    );
+                                    if (error.status === 404) {
+                                        return of(
+                                            RestaurantActions.filterRestaurantsSuccess({
+                                                restaurants: [],
+                                            })
+                                        );
+                                    }
+                                    return of(
+                                        RestaurantActions.filterRestaurantsFailure({ error })
+                                    );
+                                })
+                            );
+                    }
+                    return EMPTY;
+                })
+            )
+        );
     }
 }

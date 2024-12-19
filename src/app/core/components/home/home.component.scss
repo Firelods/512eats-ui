@@ -265,6 +265,12 @@ input:focus {
     cursor: not-allowed;
 }
 
+:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
 .bottom-button-choices {
     display: flex;
     justify-content: space-between;

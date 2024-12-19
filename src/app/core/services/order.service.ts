@@ -131,7 +131,7 @@ export class OrderService {
 
     getGroupOrder(): Observable<GroupOrder> {
         return this.http.get<GroupOrder>(
-            `${environment.apiUrl}/group-orders/get/${this.subOrder.value.groupOrderId}`
+            `${environment.apiUrl}/group-orders/get/${this.actualGroupOrderId.value}`
         );
     }
 
@@ -273,6 +273,18 @@ export class OrderService {
             placedDate: null,
             price: 0,
             payment: null,
+        });
+        this.groupOrder.next({
+            id: -1,
+            status: 'CREATED',
+            deliveryDateTime: null,
+            suborders: [],
+            deliveryLocation: {
+                id: -1,
+                address: 'Test',
+                city: 'Antibes',
+                streetNumber: '2',
+            },
         });
         localStorage.removeItem('orderId');
         localStorage.removeItem('groupOrderId');

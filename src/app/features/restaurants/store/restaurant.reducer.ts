@@ -49,6 +49,13 @@ export const reducer = createReducer(
         ...state,
         error,
     })),
+    on(RestaurantActions.filterRestaurantsSuccess, (state, { restaurants }) =>
+        adapter.setAll(restaurants, state)
+    ),
+    on(RestaurantActions.filterRestaurantsFailure, (state, { error }) => ({
+        ...state,
+        error,
+    })),
 
     on(RestaurantActions.clearRestaurants, (state) => adapter.removeAll(state)),
     on(DishActions.loadAvailableDishesSuccess, (state, { dishes, restaurantId }) =>

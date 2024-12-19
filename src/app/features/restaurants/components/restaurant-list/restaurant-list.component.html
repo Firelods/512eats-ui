@@ -1,4 +1,10 @@
 <div class="restaurant-list">
+    @if ((restaurants$ | async)?.length === 0) {
+    <div class="empty-cart">
+        <img src="sad_face.svg" alt="Empty Cart" class="empty-cart-image" />
+        <h3 class="empty-cart-text">Actually there are no restaurants available. Please try again later !</h3>
+    </div>
+    }
     @for (restaurant of restaurants$ | async; track restaurant.id) {
     <div class="restaurant-card" (click)="navigateToRestaurant(restaurant.id)">
         <div class="restaurant-header">
@@ -10,12 +16,9 @@
         </div>
         <div class="restaurant-images">
             @for (image of restaurant.dishPictureURLListSample; track image) {
-            <img
-                [src]="image"
-                [class.main-image]="restaurant.dishPictureURLListSample[0] === image"
+            <img [src]="image" [class.main-image]="restaurant.dishPictureURLListSample[0] === image"
                 [class.secondary-image]="restaurant.dishPictureURLListSample[0] !== image"
-                alt="{{ restaurant.name }} image"
-            />
+                alt="{{ restaurant.name }} image" />
             }
         </div>
     </div>

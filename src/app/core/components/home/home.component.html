@@ -10,7 +10,14 @@
         <img class="pin" src="pin.svg" alt="pin" />
         <div class="deliver-text">
             <p>Deliver to</p>
-            <p class="location">{{actualGroupOrder?.deliveryLocation?.address}}</p>
+            @if (actualGroupOrder?.id!=-1) {
+            <p class="location">{{actualGroupOrder?.deliveryLocation?.streetNumber}}
+                {{actualGroupOrder?.deliveryLocation?.address}} {{actualGroupOrder?.deliveryLocation?.city}}</p>
+            }
+            @else {
+            <p class="location"> 930 Routes des Colles, Biot</p>
+
+            }
         </div>
         @if (idGroupOrder=== ''){
         <img class="arrow-down" src="arrow_down.svg" alt="arrow" />
@@ -59,7 +66,8 @@
     </div>
     <div class="container-search" [ngClass]="{ disabled: idGroupOrder != '' ? '' : 'disabled' }">
         <div class="search-bar">
-            <input type="text" placeholder="Search for restaurants " />
+            <input type="text" placeholder="Search for restaurants" (input)="onSearchChange()"
+                [(ngModel)]="searchQuery" />
             <button class="search-btn"><img src="search.svg" alt="search" /></button>
         </div>
         <div class="toggle-container">
@@ -76,7 +84,7 @@
         <div class="filters">
             <div class="categories">
                 @for(category of categories; track $index){
-                <button class="category" [class.active]="selectedCategory === category.name"
+                <button class="category" [class.active]="selectedCategories.includes(category.name)"
                     (click)="selectCategory(category.name)">
                     <!--<img src="{{category.icon}}" [alt]="category.name + ' icon'" class="category-icon">-->
                     <span>{{ category.name }}</span>
